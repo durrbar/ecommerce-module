@@ -2,6 +2,7 @@
 
 namespace Modules\Ecommerce\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -27,6 +28,10 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        Relation::enforceMorphMap([
+            'product' => 'Modules\Ecommerce\Models\Product',
+        ]);
     }
 
     /**
