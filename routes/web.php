@@ -14,6 +14,6 @@ use Modules\Ecommerce\Http\Controllers\EcommerceController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('ecommerce', EcommerceController::class)->names('ecommerce');
-});
+// Route::group([], function () {
+//     Route::resource('ecommerce', EcommerceController::class)->names('ecommerce');
+// });

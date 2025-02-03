@@ -14,6 +14,6 @@ use Modules\Ecommerce\Http\Controllers\EcommerceController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('ecommerce', EcommerceController::class)->names('ecommerce');
-});
+// Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+//     Route::apiResource('ecommerce', EcommerceController::class)->names('ecommerce');
+// });
