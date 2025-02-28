@@ -14,6 +14,19 @@ use Modules\Ecommerce\Http\Controllers\EcommerceController;
  *
 */
 
-// Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-//     Route::apiResource('ecommerce', EcommerceController::class)->names('ecommerce');
-// });
+Route::prefix('v1')->group(function () {
+    Route::middleware(['auth:sanctum'])->name('dashboard.')->prefix('dashboard')->group(function () {
+        Route::apiResource('products', ECommerceController::class)->withTrashed()->names('products');
+    });
+
+    Route::controller(ECommerceController::class)->name('products.')->prefix('products')->group(function () {
+
+        Route::get('featureds', 'featured')->name('featured');
+
+        Route::get('latest', 'latest')->name('latest');
+
+        Route::get('search', 'search')->name('search');
+    });
+
+    Route::apiResource('products', ECommerceController::class);
+});
