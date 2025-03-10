@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Ecommerce\Http\Controllers\EcommerceAdminController;
 use Modules\Ecommerce\Http\Controllers\EcommerceController;
 
 /*
@@ -16,17 +17,17 @@ use Modules\Ecommerce\Http\Controllers\EcommerceController;
 
 Route::prefix('v1')->group(function () {
     Route::middleware(['auth:sanctum'])->name('dashboard.')->prefix('dashboard')->group(function () {
-        Route::apiResource('products', ECommerceController::class)->withTrashed()->names('products');
+        Route::apiResource('products', EcommerceAdminController::class)->withTrashed()->names('products');
     });
 
     Route::controller(ECommerceController::class)->name('products.')->prefix('products')->group(function () {
 
-        Route::get('featureds', 'featured')->name('featured');
+        Route::get('featureds', 'featured')->name('featured'); 
 
         Route::get('latest', 'latest')->name('latest');
 
         Route::get('search', 'search')->name('search');
     });
 
-    Route::apiResource('products', ECommerceController::class);
+    Route::apiResource('products', ECommerceController::class)->only(['index', 'show']);
 });
