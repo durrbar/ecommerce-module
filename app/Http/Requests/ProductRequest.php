@@ -14,41 +14,41 @@ class ProductRequest extends FormRequest
         return [
             'id' => 'required',
             'name' => 'required|string|min:1',
-            'publish'          => 'nullable|string|in:draft,published',  // Publish status nullable
+            'publish' => 'nullable|string|in:draft,published',  // Publish status nullable
             'description' => 'required|string', // Assuming a string, modify if it's rich text
             // Validation for images (URLs or files)
             'images' => 'nullable|array', // images can be optional but must be an array
             'images.*' => [
                 'required',
-                function ($attribute, $value, $fail) {
+                function ($attribute, $value, $fail): void {
                     // Check if the image is a URL
                     if (is_string($value)) {
-                        if (!filter_var($value, FILTER_VALIDATE_URL)) {
-                            $fail($attribute . ' must be a valid URL.');
-                        } elseif (!preg_match('/\.(jpg|jpeg|png|webp)$/i', $value)) {
-                            $fail($attribute . ' must be a valid image URL (jpg, jpeg, png, webp).');
+                        if (! filter_var($value, FILTER_VALIDATE_URL)) {
+                            $fail($attribute.' must be a valid URL.');
+                        } elseif (! preg_match('/\.(jpg|jpeg|png|webp)$/i', $value)) {
+                            $fail($attribute.' must be a valid image URL (jpg, jpeg, png, webp).');
                         }
                     }
                     // Check if the image is a file
                     elseif ($value instanceof \Illuminate\Http\UploadedFile) {
-                        if (!$value->isValid()) {
-                            $fail($attribute . ' is not a valid file.');
+                        if (! $value->isValid()) {
+                            $fail($attribute.' is not a valid file.');
                         }
-                        if (!in_array($value->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'webp'])) {
-                            $fail($attribute . ' must be a valid image file (jpg, jpeg, png, webp).');
+                        if (! in_array($value->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'webp'])) {
+                            $fail($attribute.' must be a valid image file (jpg, jpeg, png, webp).');
                         }
                         if ($value->getSize() > 2048 * 1024) { // 2MB max
-                            $fail($attribute . ' must be less than 2MB.');
+                            $fail($attribute.' must be less than 2MB.');
                         }
                     }
                     // Invalid if it's neither URL nor file
                     else {
-                        $fail($attribute . ' must be a valid image URL or file.');
+                        $fail($attribute.' must be a valid image URL or file.');
                     }
                 },
             ],
             'code' => 'required|string|min:1',
-            'sku' => 'required|string|min:1|unique:ecommerce_products,sku,' . $this->id, // Unique SKU
+            'sku' => 'required|string|min:1|unique:ecommerce_products,sku,'.$this->id, // Unique SKU
             'quantity' => 'required|integer|min:1',
 
             // 'colors' => 'required|array|min:1', // Ensuring at least one color is selected
@@ -65,7 +65,6 @@ class ProductRequest extends FormRequest
             //     'string',
             //     Rule::in(['Men', 'Women', 'Kids']), // Validate against specific values if needed
             // ],
-
 
             'variants.gender' => 'sometimes|array',
             'variants.gender.*' => 'string|in:Men,Women,Kids',
@@ -122,7 +121,7 @@ class ProductRequest extends FormRequest
             'sale_label_enabled' => filter_var($this->input('saleLabel.enabled'), FILTER_VALIDATE_BOOLEAN),
             'sale_label_content' => $this->input('saleLabel.content'),
             'new_label_enabled' => filter_var($this->input('newLabel.enabled'), FILTER_VALIDATE_BOOLEAN),
-            'new_label_content' => $this->input('newLabel.content')
+            'new_label_content' => $this->input('newLabel.content'),
         ]);
     }
 

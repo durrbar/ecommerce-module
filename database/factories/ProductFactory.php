@@ -38,8 +38,8 @@ class ProductFactory extends Factory
             'inventory_type' => $this->faker->randomElement(['in stock', 'low stock', 'out of stock']),
             'new_label_enabled' => $boolean,
             'new_label_content' => $boolean ? 'NEW' : null,
-            'sale_label_enabled' => !$boolean,
-            'sale_label_content' => !$boolean ? 'SALE' : null,
+            'sale_label_enabled' => ! $boolean,
+            'sale_label_content' => ! $boolean ? 'SALE' : null,
             'total_sold' => $this->faker->numberBetween(0, 1000),
         ];
     }
@@ -51,7 +51,7 @@ class ProductFactory extends Factory
      */
     public function configure()
     {
-        return $this->afterCreating(function (Product $product) {
+        return $this->afterCreating(function (Product $product): void {
             // Attach Variants
             $variantData = [
                 'size' => Variant::where('type', 'size')
@@ -103,7 +103,6 @@ class ProductFactory extends Factory
     /**
      * Attach reviews to the product.
      *
-     * @param Product $product
      * @return void
      */
     protected function attachReviews(Product $product)
@@ -127,7 +126,7 @@ class ProductFactory extends Factory
                     return "uploads/product/image/product-{$index}.webp";
                 });
 
-                $review->attachments()->createMany($attachments->map(function ($url) { 
+                $review->attachments()->createMany($attachments->map(function ($url) {
                     return ['path' => $url]; // Store each attachment
                 })->toArray());
             }

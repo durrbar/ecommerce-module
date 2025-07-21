@@ -21,16 +21,16 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class EcommerceAdminController extends Controller
 {
-    use HasVariant;
     use AuthorizesRequests;
     use HandlesProductOperations;
+    use HasVariant;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): JsonResponse
     {
-        $cacheKey = self::CACHE_ADMIN_PRODUCTS . $request->query('page', 1);
+        $cacheKey = self::CACHE_ADMIN_PRODUCTS.$request->query('page', 1);
         $cacheDuration = now()->addMinutes(config('cache.duration'));
 
         $products = Cache::remember($cacheKey, $cacheDuration, function () {
@@ -46,13 +46,12 @@ class EcommerceAdminController extends Controller
                     'total_shares',
                     'created_at'
                 )->with('cover')->withCount('reviews')->withAvg('reviews', 'rating')->allowedFilters([AllowedFilter::exact('publish')])
-                    ->allowedSorts('created_at')->paginate(10);
+                ->allowedSorts('created_at')->paginate(10);
         });
 
-        return response()->json(['products' => 
-        new ProductCollection(
+        return response()->json(['products' => new ProductCollection(
             $products
-            )
+        ),
         ]);
     }
 
@@ -79,7 +78,7 @@ class EcommerceAdminController extends Controller
 
             return response()->json(['product' => $product, 'message' => 'Product created successfully!'], Response::HTTP_CREATED);
         } catch (\Exception $e) {
-            return $this->handleError(self::ERROR_CREATE . ': ' . $e->getMessage(), $request);
+            return $this->handleError(self::ERROR_CREATE.': '.$e->getMessage(), $request);
         }
     }
 
@@ -122,7 +121,7 @@ class EcommerceAdminController extends Controller
 
             return response()->json(['product' => new ProductResource($product)]);
         } catch (\Exception $e) {
-            return $this->handleError(self::ERROR_UPDATE . ': ' . $e->getMessage(), $request);
+            return $this->handleError(self::ERROR_UPDATE.': '.$e->getMessage(), $request);
         }
     }
 
@@ -132,7 +131,7 @@ class EcommerceAdminController extends Controller
     public function destroy(Product $product): JsonResponse
     {
         try {
-            DB::transaction(function () use ($product) {
+            DB::transaction(function () use ($product): void {
                 // Delete associated images
                 foreach ($product->images as $image) {
                     if (Storage::exists($image->path)) {
@@ -149,7 +148,7 @@ class EcommerceAdminController extends Controller
 
             return response()->json(['message' => 'Product deleted successfully.'], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return $this->handleError(self::ERROR_DELETE . ': ' . $e->getMessage(), null);
+            return $this->handleError(self::ERROR_DELETE.': '.$e->getMessage(), null);
         }
     }
 }

@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Variant extends Model
 {
-    use HasUuids;
     use HasFactory;
+    use HasUuids;
 
     /**
      * The table associated with the model.

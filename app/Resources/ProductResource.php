@@ -37,29 +37,29 @@ class ProductResource extends JsonResource
 
             // Relationships
             'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'images' => $this->whenLoaded('images', fn() => $this->images->pluck('url')),
+            'images' => $this->whenLoaded('images', fn () => $this->images->pluck('url')),
 
             // Variant types (dynamic generation)
             ...$this->whenLoaded('variants', function () {
                 return collect(['gender', 'color', 'size', 'memory'])
-                    ->mapWithKeys(fn($type) => [
+                    ->mapWithKeys(fn ($type) => [
                         Str::plural($type) => $this->variants
                             ->where('type', $type)
                             ->pluck('name')
                             ->values()
-                            ->all()
+                            ->all(),
                     ])
-                    ->filter(fn($value) => !empty($value))
+                    ->filter(fn ($value) => ! empty($value))
                     ->all();
             }, []),
 
             // Media
-            'coverUrl' => $this->whenLoaded('cover', fn() => $this->cover?->url)
-                ?? $this->whenLoaded('images', fn() => $this->images->first()?->url)
+            'coverUrl' => $this->whenLoaded('cover', fn () => $this->cover?->url)
+                ?? $this->whenLoaded('images', fn () => $this->images->first()?->url)
                 ?? null,
 
             // Reviews and ratings
-            'ratings' => $this->whenLoaded('reviews', fn() => $this->calculateRatings()),
+            'ratings' => $this->whenLoaded('reviews', fn () => $this->calculateRatings()),
             'totalReviews' => $this->whenCounted('reviews'),
             'totalRatings' => $this->whenAggregated('reviews', 'rating', 'avg'),
             'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
@@ -73,12 +73,12 @@ class ProductResource extends JsonResource
     protected function calculateRatings(): array
     {
         $reviews = $this->reviews->toArray();
-        $ratings = collect(range(1, 5))->mapWithKeys(fn($i) => [
-            $i => ['name' => "{$i}star", 'count' => 0]
+        $ratings = collect(range(1, 5))->mapWithKeys(fn ($i) => [
+            $i => ['name' => "{$i}star", 'count' => 0],
         ])->all();
 
         foreach ($reviews as $review) {
-            $rating = (int)floor($review['rating']);
+            $rating = (int) floor($review['rating']);
             $ratings[$rating]['count']++;
         }
 
@@ -88,6 +88,7 @@ class ProductResource extends JsonResource
     protected function formatLabel(string $type): array
     {
         $enabled = $this->{"{$type}_label_enabled"} && $this->{"{$type}_label_content"};
+
         return [
             'enabled' => $enabled,
             'content' => $enabled ? $this->{"{$type}_label_content"} : null,

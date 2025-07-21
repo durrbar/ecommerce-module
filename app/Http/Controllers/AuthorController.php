@@ -1,0 +1,162 @@
+<?php
+
+namespace Modules\Ecommerce\Http\Controllers;
+
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Modules\Core\Exceptions\DurrbarException;
+use Modules\Core\Http\Controllers\CoreController;
+use Modules\Ecommerce\Http\Requests\AuthorRequest;
+use Modules\Ecommerce\Http\Resources\AuthorResource;
+use Modules\Ecommerce\Repositories\AuthorRepository;
+use Modules\Role\Enums\Permission;
+
+class AuthorController extends CoreController
+{
+    public $repository;
+
+    public function __construct(AuthorRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $limit = $request->limit ? $request->limit : 15;
+        $authors = $this->fetchAuthors($request)->paginate($limit);
+        $data = AuthorResource::collection($authors)->response()->getData(true);
+
+        return formatAPIResourcePaginate($data);
+    }
+
+    public function fetchAuthors(Request $request)
+    {
+        $language = $request->language ?? DEFAULT_LANGUAGE;
+
+        return $this->repository->where('language', $language);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return mixed
+     */
+    public function store(AuthorRequest $request)
+    {
+        try {
+            if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
+                return $this->repository->storeAuthor($request);
+            }
+            throw new AuthorizationException(NOT_AUTHORIZED);
+        } catch (DurrbarException $e) {
+            throw new DurrbarException(COULD_NOT_CREATE_THE_RESOURCE);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return JsonResponse
+     */
+    public function show(Request $request, $slug)
+    {
+        try {
+            $request->slug = $slug;
+            $author = $this->fetchAuthor($request);
+
+            return new AuthorResource($author);
+        } catch (DurrbarException $th) {
+            throw new DurrbarException(NOT_FOUND);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  $slug
+     * @return JsonResponse
+     */
+    public function fetchAuthor(Request $request)
+    {
+        $slug = $request->slug;
+        $language = $request->language ?? DEFAULT_LANGUAGE;
+        try {
+            $author = $this->repository->where('slug', $slug)->where('language', $language)->firstOrFail();
+        } catch (\Exception $e) {
+            throw new ModelNotFoundException(NOT_FOUND);
+        }
+
+        return $author;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return array
+     */
+    public function update(AuthorRequest $request, $id)
+    {
+        try {
+            $request->id = $id;
+
+            return $this->updateAuthor($request);
+        } catch (DurrbarException $th) {
+            throw new DurrbarException(COULD_NOT_UPDATE_THE_RESOURCE);
+        }
+    }
+
+    public function updateAuthor(Request $request)
+    {
+        if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
+            try {
+                $author = $this->repository->findOrFail($request->id);
+            } catch (\Exception $e) {
+                throw new ModelNotFoundException(NOT_FOUND);
+            }
+
+            return $this->repository->updateAuthor($request, $author);
+        }
+        throw new AuthorizationException(NOT_AUTHORIZED);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return JsonResponse
+     */
+    public function destroy($id, Request $request)
+    {
+        try {
+            $request['id'] = $id;
+
+            return $this->deleteAuthor($request);
+        } catch (DurrbarException $th) {
+            throw new DurrbarException(COULD_NOT_DELETE_THE_RESOURCE);
+        }
+    }
+
+    public function deleteAuthor(Request $request)
+    {
+        if ($request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            $author = $this->repository->findOrFail($request->id);
+            $author->delete();
+
+            return $author;
+        }
+        throw new DurrbarException(NOT_AUTHORIZED);
+    }
+
+    public function topAuthor(Request $request)
+    {
+        $language = $request->language ?? DEFAULT_LANGUAGE;
+        $limit = $request->limit ? $request->limit : 10;
+
+        return $this->repository->where('language', $language)->withCount('products')->orderBy('products_count', 'desc')->take($limit)->get();
+    }
+}

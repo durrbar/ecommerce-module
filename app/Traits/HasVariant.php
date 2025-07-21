@@ -10,8 +10,6 @@ trait HasVariant
     /**
      * Sync the given variants with the given model.
      *
-     * @param Model $model
-     * @param array $variants
      * @return array The IDs of the synced variants.
      */
     public function syncVariants(Model $model, array $variants = []): array
@@ -19,7 +17,7 @@ trait HasVariant
         $syncData = [];
 
         foreach ($variants as $type => $values) {
-            if (!is_array($values) || empty($values)) {
+            if (! is_array($values) || empty($values)) {
                 continue;
             }
 
@@ -31,7 +29,7 @@ trait HasVariant
 
             foreach ($values as $value) {
                 // Use existing variant ID or create a new one
-                if (!isset($existingVariants[$value])) {
+                if (! isset($existingVariants[$value])) {
                     $variant = Variant::create(['name' => $value, 'type' => $type]);
                     $existingVariants[$value] = $variant->id;
                 }

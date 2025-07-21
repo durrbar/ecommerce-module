@@ -15,14 +15,14 @@ use Modules\Ecommerce\Http\Controllers\EcommerceController;
  *
 */
 
-Route::prefix('v1')->group(function () {
-    Route::middleware(['auth:sanctum'])->name('dashboard.')->prefix('dashboard')->group(function () {
+Route::prefix('v1')->group(function (): void {
+    Route::middleware(['auth:sanctum'])->name('dashboard.')->prefix('dashboard')->group(function (): void {
         Route::apiResource('products', EcommerceAdminController::class)->withTrashed()->names('products');
     });
 
-    Route::controller(ECommerceController::class)->name('products.')->prefix('products')->group(function () {
+    Route::controller(ECommerceController::class)->name('products.')->prefix('products')->group(function (): void {
 
-        Route::get('featureds', 'featured')->name('featured'); 
+        Route::get('featureds', 'featured')->name('featured');
 
         Route::get('latest', 'latest')->name('latest');
 

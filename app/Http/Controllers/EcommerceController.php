@@ -16,17 +16,17 @@ use Spatie\Searchable\Search;
 
 class EcommerceController extends Controller
 {
-    use HasVariant;
     use HandlesProductOperations;
+    use HasVariant;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): JsonResponse
     {
-        $cacheKey = self::CACHE_PUBLIC_PRODUCTS . $request->query('page', 1);
+        $cacheKey = self::CACHE_PUBLIC_PRODUCTS.$request->query('page', 1);
         $cacheDuration = now()->addMinutes(config('cache.duration'));
-        
+
         $products = Cache::remember($cacheKey, $cacheDuration, function () {
             return QueryBuilder::for(Product::class)
                 ->allowedFields(
@@ -42,10 +42,9 @@ class EcommerceController extends Controller
                 )->with('cover')->withCount('reviews')->withAvg('reviews', 'rating')->where('publish', 'published')->paginate(10);
         });
 
-        return response()->json(['products' => 
-        new ProductCollection(
+        return response()->json(['products' => new ProductCollection(
             $products
-            )
+        ),
         ]);
     }
 
@@ -74,7 +73,7 @@ class EcommerceController extends Controller
 
             return response()->json(['featureds' => ProductResource::collection($featureds)]);
         } catch (\Exception $e) {
-            return $this->handleError(self::ERROR_FEATURED . ': ' . $e->getMessage(), null);
+            return $this->handleError(self::ERROR_FEATURED.': '.$e->getMessage(), null);
         }
     }
 
@@ -86,9 +85,10 @@ class EcommerceController extends Controller
                     ->withCount(['comments as total_comments'])
                     ->limit(5)->get();
             });
+
             return response()->json(['latest' => $latest]);
         } catch (\Exception $e) {
-            return $this->handleError(self::ERROR_LATEST . ': ' . $e->getMessage(), null);
+            return $this->handleError(self::ERROR_LATEST.': '.$e->getMessage(), null);
         }
     }
 

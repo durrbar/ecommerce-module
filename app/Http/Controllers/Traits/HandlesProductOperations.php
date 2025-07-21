@@ -15,15 +15,22 @@ use Modules\Ecommerce\Models\Product;
 trait HandlesProductOperations
 {
     private const CACHE_PUBLIC_PRODUCTS = 'api.v1.products.public_';
+
     private const CACHE_ADMIN_PRODUCTS = 'api.v1.products.admin_';
+
     private const CACHE_FEATURED_PRODUCTS = 'api.v1.products.featured';
+
     private const CACHE_LATEST_PRODUCTS = 'api.v1.products.latest';
 
     // Error messages
     private const ERROR_CREATE = 'Failed to create product';
+
     private const ERROR_UPDATE = 'Failed to update product';
+
     private const ERROR_DELETE = 'Failed to delete product';
+
     private const ERROR_FEATURED = 'Failed to retrieve featured products';
+
     private const ERROR_LATEST = 'Failed to retrieve latest products';
 
     private function loadProductRelations(Product $product): Product
@@ -52,7 +59,7 @@ trait HandlesProductOperations
     private function deleteOldImages($existingImages, $incomingUrls): void
     {
         foreach ($existingImages as $existingImage) {
-            if (!$incomingUrls->contains($existingImage->url)) {
+            if (! $incomingUrls->contains($existingImage->url)) {
                 Storage::delete($existingImage->path);
                 $existingImage->delete();
             }
@@ -75,8 +82,8 @@ trait HandlesProductOperations
 
     private function clearProductCache(): void
     {
-        Cache::forget(self::CACHE_ADMIN_PRODUCTS . '*');
-        Cache::forget(self::CACHE_PUBLIC_PRODUCTS . '*');
+        Cache::forget(self::CACHE_ADMIN_PRODUCTS.'*');
+        Cache::forget(self::CACHE_PUBLIC_PRODUCTS.'*');
         Cache::forget(self::CACHE_FEATURED_PRODUCTS);
         Cache::forget(self::CACHE_LATEST_PRODUCTS);
     }
@@ -84,9 +91,9 @@ trait HandlesProductOperations
     /**
      * Handle error responses.
      *
-     * @param string $message The error message to be logged and returned in the response.
-     * @param Request|null $request The HTTP request that triggered the error, if available.
-     * @param int $statusCode The HTTP status code for the response (default is 500).
+     * @param  string  $message  The error message to be logged and returned in the response.
+     * @param  Request|null  $request  The HTTP request that triggered the error, if available.
+     * @param  int  $statusCode  The HTTP status code for the response (default is 500).
      * @return JsonResponse A JSON response containing the success status and error message.
      */
     protected function handleError(string $message, ?Request $request = null, int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
