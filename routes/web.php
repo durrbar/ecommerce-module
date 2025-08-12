@@ -7,10 +7,8 @@ use Modules\Ecommerce\Http\Controllers\AttributeController;
 use Modules\Ecommerce\Http\Controllers\AttributeValueController;
 use Modules\Ecommerce\Http\Controllers\AuthorController;
 use Modules\Ecommerce\Http\Controllers\CategoryController;
-use Modules\Ecommerce\Http\Controllers\EcommerceController;
 use Modules\Ecommerce\Http\Controllers\FaqsController;
 use Modules\Ecommerce\Http\Controllers\FeedbackController;
-use Modules\Ecommerce\Http\Controllers\FlashSaleController;
 use Modules\Ecommerce\Http\Controllers\ManufacturerController;
 use Modules\Ecommerce\Http\Controllers\NotifyLogsController;
 use Modules\Ecommerce\Http\Controllers\ProductController;
@@ -86,10 +84,6 @@ Route::apiResource('terms-and-conditions', TermsAndConditionsController::class, 
     'only' => ['index', 'show'],
 ]);
 
-Route::apiResource('flash-sale', FlashSaleController::class, [
-    'only' => ['index', 'show'],
-]);
-
 /**
  * ******************************************
  * Authorized Route for Customers only
@@ -162,7 +156,6 @@ Route::group(
         Route::get('category-wise-product-sale', [AnalyticsController::class, 'categoryWiseProductSale']);
         Route::get('draft-products', [ProductController::class, 'draftedProducts']);
         Route::get('products-stock', [ProductController::class, 'productStock']);
-        Route::get('products-by-flash-sale', [FlashSaleController::class, 'getProductsByFlashSale']);
         Route::get('top-rate-product', [AnalyticsController::class, 'topRatedProducts']);
     }
 );
@@ -186,12 +179,6 @@ Route::group(
         // Route::apiResource('faqs', FaqsController::class, [
         //     'only' => ['store', 'update', 'destroy'],
         // ]);
-
-        Route::apiResource('flash-sale', FlashSaleController::class, [
-            'only' => ['store', 'update', 'destroy'],
-        ]);
-
-        Route::get('product-flash-sale-info', [FlashSaleController::class, 'getFlashSaleInfoByProductID']);
 
         Route::apiResource('terms-and-conditions', TermsAndConditionsController::class, [
             'only' => ['store', 'update', 'destroy'],
