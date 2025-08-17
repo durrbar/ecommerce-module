@@ -2,6 +2,7 @@
 
 namespace Modules\Ecommerce\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,6 +10,7 @@ use Modules\User\Models\User;
 
 class Question extends Model
 {
+    use HasUuids;
     use SoftDeletes;
 
     protected $table = 'questions';

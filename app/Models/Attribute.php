@@ -4,6 +4,7 @@ namespace Modules\Ecommerce\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +14,7 @@ use Modules\Vendor\Models\Shop;
 
 class Attribute extends Model
 {
+    use HasUuids;
     use Sluggable;
     use TranslationTrait;
 

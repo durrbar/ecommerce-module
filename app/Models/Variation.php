@@ -5,12 +5,14 @@ namespace Modules\Ecommerce\Models;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Ecommerce\Traits\TranslationTrait;
 use Modules\Order\Models\DigitalFile;
 
 class Variation extends Model
 {
+    use HasUuids;
     use TranslationTrait;
 
     protected $table = 'variation_options';

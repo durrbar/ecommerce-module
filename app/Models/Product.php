@@ -7,6 +7,7 @@ use Carbon\CarbonPeriod;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,6 +28,7 @@ use Modules\Vendor\Models\Shop;
 
 class Product extends Model
 {
+    use HasUuids;
     use Excludable;
     use Metable;
     use Sluggable;

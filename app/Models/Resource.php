@@ -4,11 +4,13 @@ namespace Modules\Ecommerce\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Ecommerce\Traits\TranslationTrait;
 
 class Resource extends Model
 {
+    use HasUuids;
     use Sluggable;
     use TranslationTrait;
 
