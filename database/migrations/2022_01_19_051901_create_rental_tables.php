@@ -103,5 +103,11 @@ return new class () extends Migration {
         Schema::dropIfExists('products_meta');
         Schema::dropIfExists('locations');
         Schema::dropIfExists('location_product');
+        Schema::dropIfExists('dropoff_location_product');
+        Schema::dropIfExists('pickup_location_product');
+        Schema::dropIfExists('feature_product');
+        Schema::dropIfExists('deposit_product');
+        Schema::dropIfExists('person_product');
+        Schema::dropIfExists('resources');
     }
 };

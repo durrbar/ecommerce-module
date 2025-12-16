@@ -136,14 +136,14 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('types');
-        Schema::dropIfExists('products');
-        Schema::dropIfExists('categories');
         Schema::dropIfExists('category_product');
-        Schema::dropIfExists('attributes');
-        Schema::dropIfExists('attribute_values');
+        Schema::dropIfExists('categories');
         Schema::dropIfExists('attribute_product');
+        Schema::dropIfExists('attribute_values');
+        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('products');
         Schema::dropIfExists('authors');
         Schema::dropIfExists('manufacturers');
+        Schema::dropIfExists('types');
     }
 };

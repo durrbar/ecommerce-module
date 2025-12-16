@@ -31,11 +31,8 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::table('flash_sale_requests', function (Blueprint $table): void {
-            $table->dropColumn('note');
-            $table->dropColumn('flash_sale_id');
-            $table->dropColumn('language');
-        });
         Schema::dropIfExists('flash_sale_requests_products');
+        
+        Schema::dropIfExists('flash_sale_requests');
     }
 };

@@ -70,6 +70,7 @@ return new class () extends Migration {
      */
     public function down()
     {
+        Schema::dropIfExists('banners');
         Schema::dropIfExists('withdraws');
         Schema::dropIfExists('store_settings');
         Schema::dropIfExists('variation_options');

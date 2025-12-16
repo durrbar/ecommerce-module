@@ -51,8 +51,8 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('flash_sales');
         Schema::dropIfExists('flash_sale_requests');
         Schema::dropIfExists('flash_sale_products');
+        Schema::dropIfExists('flash_sales');
     }
 };

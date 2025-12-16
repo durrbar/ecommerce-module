@@ -35,16 +35,34 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::table('reviews', function (Blueprint $table): void {
-            $table->dropColumn('order_id');
-            $table->dropColumn('variation_option_id');
-        });
+        if (Schema::hasTable('reviews')) {
+            Schema::table('reviews', function (Blueprint $table): void {
+                if (Schema::hasColumn('reviews', 'order_id')) {
+                    $table->dropForeign(['order_id']);
+                    $table->dropColumn('order_id');
+                }
+                if (Schema::hasColumn('reviews', 'variation_option_id')) {
+                    $table->dropForeign(['variation_option_id']);
+                    $table->dropColumn('variation_option_id');
+                }
+            });
+        }
 
-        Schema::table('wishlists', function (Blueprint $table): void {
-            $table->dropColumn('variation_option_id');
-        });
-        Schema::table('orders', function (Blueprint $table): void {
-            $table->dropColumn('cancelled_amount');
-        });
+        if (Schema::hasTable('wishlists')) {
+            Schema::table('wishlists', function (Blueprint $table): void {
+                if (Schema::hasColumn('wishlists', 'variation_option_id')) {
+                    $table->dropForeign(['variation_option_id']);
+                    $table->dropColumn('variation_option_id');
+                }
+            });
+        }
+
+        if (Schema::hasTable('orders')) {
+            Schema::table('orders', function (Blueprint $table): void {
+                if (Schema::hasColumn('orders', 'cancelled_amount')) {
+                    $table->dropColumn('cancelled_amount');
+                }
+            });
+        }
     }
 };
