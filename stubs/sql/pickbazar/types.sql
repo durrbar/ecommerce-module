@@ -10,7 +10,7 @@ INSERT INTO `types` (
     `updated_at`
   )
 VALUES (
-    1,
+    'c37d92b2-b426-4eb2-98cb-f67334e5faba',
     'Grocery',
     '{\"isHome\":false,\"productCard\":\"helium\",\"layoutType\":\"classic\"}',
     'grocery',
@@ -21,7 +21,7 @@ VALUES (
     '2023-10-05 06:47:06'
   ),
   (
-    2,
+    '507fdca6-e184-402d-a412-55322b5a288d',
     'Bakery',
     '{\"isHome\": false, \"layoutType\": \"standard\", \"productCard\": \"argon\"}',
     'bakery',
@@ -32,7 +32,7 @@ VALUES (
     '2021-08-18 13:34:28'
   ),
   (
-    3,
+    'c65ca0f2-8706-40fa-b6f2-2f1bcaf88f33',
     'Makeup',
     '{\"isHome\": false, \"layoutType\": \"classic\", \"productCard\": \"helium\"}',
     'makeup',
@@ -43,7 +43,7 @@ VALUES (
     '2021-08-18 13:35:43'
   ),
   (
-    4,
+    '5eb4ed3e-6203-4b22-bcb2-5107db28ed4b',
     'Bags',
     '{\"isHome\": false, \"layoutType\": \"classic\", \"productCard\": \"helium\"}',
     'bags',
@@ -54,7 +54,7 @@ VALUES (
     '2021-08-18 13:50:45'
   ),
   (
-    5,
+    '1f20c8cb-6534-47c4-a44e-9b62107573bc',
     'Clothing',
     '{\"isHome\": false, \"layoutType\": \"classic\", \"productCard\": \"xenon\"}',
     'clothing',
@@ -65,7 +65,7 @@ VALUES (
     '2021-08-18 18:34:07'
   ),
   (
-    6,
+    '8518364c-1e83-40af-b4f4-53864ba81c30',
     'Furniture',
     '{\"isHome\": false, \"layoutType\": \"modern\", \"productCard\": \"krypton\"}',
     'furniture',
@@ -76,7 +76,7 @@ VALUES (
     '2021-08-18 18:33:13'
   ),
   (
-    7,
+    'e95f0942-2141-4b73-9d60-1c22def81311',
     'Daily Needs',
     '{\"isHome\": false, \"layoutType\": \"minimal\", \"productCard\": \"neon\"}',
     'daily-needs',
@@ -87,7 +87,7 @@ VALUES (
     '2021-09-27 14:08:07'
   ),
   (
-    8,
+    '3add7af8-d236-4fbb-8f7c-03c3274b11a7',
     'Books',
     '{\"isHome\":false,\"productCard\":\"radon\",\"layoutType\":\"compact\",\"bestSelling\":{\"enable\":true,\"title\":\"Best Selling Products\"},\"popularProducts\":{\"enable\":true,\"title\":\"Popular Products\"},\"category\":{\"enable\":true,\"title\":\"Whick Book You Like To See?\"},\"handpickedProducts\":[],\"newArrival\":{\"enable\":true,\"title\":\"New Arrival\"},\"authors\":{\"enable\":false},\"manufactures\":[]}',
     'books',
@@ -98,7 +98,7 @@ VALUES (
     '2023-12-07 09:18:42'
   ),
   (
-    9,
+    '5f82cecb-f061-466a-89ac-a63e73c0a7a2',
     'Gadget',
     '{\"isHome\":false,\"productCard\":\"neon\",\"layoutType\":\"modern\"}',
     'gadget',
@@ -109,7 +109,7 @@ VALUES (
     '2023-10-06 10:13:59'
   ),
   (
-    11,
+    'dc011637-d137-4e69-a469-589a44af593c',
     'Medicine',
     '{\"isHome\":false,\"productCard\":\"xenon\",\"layoutType\":\"classic\"}',
     'medicine',

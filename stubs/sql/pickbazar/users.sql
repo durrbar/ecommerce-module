@@ -1,6 +1,7 @@
 INSERT INTO `users` (
         `id`,
-        `name`,
+        `first_name`,
+        `last_name`,
         `email`,
         `email_verified_at`,
         `password`,
@@ -11,8 +12,9 @@ INSERT INTO `users` (
         `shop_id`
     )
 VALUES (
-        '10000000-0000-0000-0000-000000000001',
-        'Store Owner',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
+        'Store',
+        'Owner',
         'vendor@demo.com',
         NULL,
         '$2y$10$UVs.WftC2iIdLQsHz9Tbdu7OmUXG3P7wyjHvJqCunyJ7JE8ekyXr.',
@@ -23,8 +25,9 @@ VALUES (
         NULL
     ),
     (
-        '10000000-0000-0000-0000-000000000002',
+        'f78c1d0d-8100-408c-94e1-4dfeb78f05f6',
         'Customer',
+        '1',
         'customer@demo.com',
         NULL,
         '$2y$10$UVs.WftC2iIdLQsHz9Tbdu7OmUXG3P7wyjHvJqCunyJ7JE8ekyXr.',
@@ -35,8 +38,9 @@ VALUES (
         NULL
     ),
     (
-        '10000000-0000-0000-0000-000000000004',
-        'customer2',
+        '3403ef64-b0ba-4a42-96ab-6fd411b9ae7c',
+        'customer',
+        '2',
         'customer2@demo.com',
         NULL,
         '$2y$10$UVs.WftC2iIdLQsHz9Tbdu7OmUXG3P7wyjHvJqCunyJ7JE8ekyXr.',
@@ -47,8 +51,9 @@ VALUES (
         NULL
     ),
     (
-        '10000000-0000-0000-0000-000000000005',
-        'customer3',
+        'c8975282-4d42-45de-9e51-8a8fe69e4d2b',
+        'customer',
+        '3',
         'customer3@demo.com',
         NULL,
         '$2y$10$UVs.WftC2iIdLQsHz9Tbdu7OmUXG3P7wyjHvJqCunyJ7JE8ekyXr.',

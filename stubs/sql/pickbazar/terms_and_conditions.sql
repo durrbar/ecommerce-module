@@ -14,8 +14,8 @@ INSERT INTO `terms_and_conditions` (
         `updated_at`
     )
 VALUES (
-        1,
-        1,
+        '80b88ab1-6dac-46c0-9ff5-78f6abd36a02',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
         NULL,
         'Disclaimers and Limitation of Liability',
         'disclaimers-and-limitation-of-liability',
@@ -29,8 +29,8 @@ VALUES (
         NULL
     ),
     (
-        2,
-        1,
+        '30da6e28-000d-4cf2-81f6-f07cce75e042',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
         NULL,
         'Intellectual Property',
         'intellectual-property',
@@ -44,8 +44,8 @@ VALUES (
         NULL
     ),
     (
-        3,
-        1,
+        'f80718e1-f152-49b4-9299-d4ff2194e113',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
         NULL,
         'Privacy Policy',
         'privacy-policy',
@@ -59,8 +59,8 @@ VALUES (
         NULL
     ),
     (
-        4,
-        1,
+        'ce4cc7fe-7b00-4f19-b219-7675db0ee206',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
         NULL,
         'Use of the Website',
         'use-of-the-website',
@@ -74,8 +74,8 @@ VALUES (
         NULL
     ),
     (
-        5,
-        1,
+        '2bc012f4-e07f-4077-893d-0afb80ce24d6',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
         NULL,
         'Acceptance of Terms',
         'acceptance-of-terms',
@@ -89,9 +89,9 @@ VALUES (
         NULL
     ),
     (
-        6,
-        1,
-        6,
+        'cfb665f0-37ff-4099-85ad-392ffac08f05',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
+        'f2375be9-a8fd-430e-87e7-049752b02633',
         'Terms 1',
         'terms-1',
         'Terms 1',
@@ -104,9 +104,9 @@ VALUES (
         '2023-10-10 04:34:41'
     ),
     (
-        7,
-        1,
-        6,
+        '4570ed9c-f5a2-4c10-9936-2408028b2142',
+        'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
+        'f2375be9-a8fd-430e-87e7-049752b02633',
         't 1',
         't-1',
         't 1',

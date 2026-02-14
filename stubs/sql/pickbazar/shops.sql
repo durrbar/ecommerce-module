@@ -14,8 +14,8 @@ INSERT INTO `shops` (
     `updated_at`
   )
 VALUES (
-    1,
-    1,
+    '71e5d4d3-2488-47af-b2af-08463803d347',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Furniture Shop',
     'furniture-shop',
     'The furniture shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.',
@@ -29,8 +29,8 @@ VALUES (
     '2023-10-12 04:40:13'
   ),
   (
-    2,
-    1,
+    '5bc5d2fa-a4a0-41ed-a815-dd5e6a3d723f',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Clothing Shop',
     'clothing-shop',
     'The clothing shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.',
@@ -44,8 +44,8 @@ VALUES (
     '2023-10-19 06:51:41'
   ),
   (
-    3,
-    1,
+    '36030807-b79f-4e5f-9295-5972172a239f',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Bags Shop',
     'bags-shop',
     'The Bag shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.',
@@ -59,8 +59,8 @@ VALUES (
     '2023-10-19 06:52:14'
   ),
   (
-    4,
-    1,
+    '4c9ce8ca-1e27-46af-8381-1db2eeef3141',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Makeup Shop',
     'makeup-shop',
     'The makeup shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.',
@@ -74,8 +74,8 @@ VALUES (
     '2023-10-19 07:04:43'
   ),
   (
-    5,
-    1,
+    '3b506ee5-80cc-44a4-aedc-f7aa0c35ce0d',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Bakery Shop',
     'bakery-shop',
     'The bakery shop is the best shop around the city. This is being run under the store owner and our aim is to provide fresh and quality product and hassle free customer service.',
@@ -89,8 +89,8 @@ VALUES (
     '2023-10-12 04:44:06'
   ),
   (
-    6,
-    1,
+    'f2375be9-a8fd-430e-87e7-049752b02633',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Grocery Shop',
     'grocery-shop',
     'The grocery shop is the best shop around the city. This is being run under the store owner and our aim is to provide fresh and quality product and hassle free customer service.',
@@ -104,8 +104,8 @@ VALUES (
     '2023-10-19 07:05:23'
   ),
   (
-    7,
-    1,
+    '3c466759-77f1-4866-afa3-0dd27a126e2f',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Books Shop',
     'books-shop',
     'This is the book shop. All the publications sells their book under this book shop',
@@ -119,8 +119,8 @@ VALUES (
     '2023-10-25 03:30:21'
   ),
   (
-    9,
-    1,
+    'd4f7f60d-a5be-4705-8c96-5a758d01edf9',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Gadget',
     'gadget',
     'The Gadget shop is the best shop in the city. This is being run under the store owner and our aim is to provide quality product and hassle-free customer service.',
@@ -134,8 +134,8 @@ VALUES (
     '2023-10-19 06:54:37'
   ),
   (
-    11,
-    1,
+    '8019db6c-4273-4542-b463-ce9cfac34ddd',
+    'abe46b1a-6cdb-4d16-9358-b8a7d3f64e4d',
     'Medicine',
     'medicine',
     NULL,
