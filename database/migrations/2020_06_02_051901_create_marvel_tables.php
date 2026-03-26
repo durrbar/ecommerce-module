@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Ecommerce\Enums\ProductStatus;
 use Modules\Ecommerce\Enums\ProductType;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -46,8 +49,7 @@ return new class () extends Migration {
             $table->json('image')->nullable();
             $table->json('cover_image')->nullable();
             $table->string('slug');
-            // $table->uuid('type_id');
-            $table->foreignUuid('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
             $table->text('description')->nullable();
             $table->string('website')->nullable();
             $table->json('socials')->nullable();
@@ -59,8 +61,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('slug');
             $table->text('description')->nullable();
-            // $table->uuid('type_id');
-            $table->foreignUuid('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
             $table->double('price')->nullable();
             $table->double('sale_price')->nullable();
             $table->string('sku')->nullable();
@@ -87,20 +88,16 @@ return new class () extends Migration {
             $table->string('icon')->nullable();
             $table->json('image')->nullable();
             $table->text('details')->nullable();
-            // $table->uuid('parent')->nullable();
-            $table->foreignUuid('parent')->references('id')->on('categories')->onDelete('cascade')->nullable();
-            // $table->uuid('type_id');
-            $table->foreignUuid('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreignUuid('parent')->constrained('categories')->cascadeOnDelete()->nullable();
+            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
 
         Schema::create('category_product', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            // $table->uuid('product_id');
-            // $table->uuid('category_id');
-            $table->foreignUuid('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreignUuid('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('category_id')->constrained()->cascadeOnDelete();
         });
 
         Schema::create('attributes', function (Blueprint $table): void {
@@ -113,18 +110,15 @@ return new class () extends Migration {
         Schema::create('attribute_values', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->string('slug');
-            // $table->uuid('attribute_id');
-            $table->foreignUuid('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
+            $table->foreignUuid('attribute_id')->constrained()->cascadeOnDelete();
             $table->string('value');
             $table->timestamps();
         });
 
         Schema::create('attribute_product', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            // $table->uuid('attribute_value_id');
-            $table->foreignUuid('attribute_value_id')->references('id')->on('attribute_values')->onDelete('cascade');
-            // $table->uuid('product_id');
-            $table->foreignUuid('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('attribute_value_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

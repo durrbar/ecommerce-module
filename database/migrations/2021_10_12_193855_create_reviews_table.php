@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -14,12 +17,9 @@ return new class () extends Migration {
     {
         Schema::create('reviews', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->uuid('shop_id');
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
-            $table->uuid('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('shop_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->longText('comment');
             $table->double('rating')->nullable();
             $table->json('photos')->nullable();
@@ -29,12 +29,9 @@ return new class () extends Migration {
 
         Schema::create('questions', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->uuid('shop_id');
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
-            $table->uuid('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('shop_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->text('question');
             $table->text('answer')->nullable();
             $table->softDeletes();
@@ -43,8 +40,7 @@ return new class () extends Migration {
 
         Schema::create('feedbacks', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->uuidMorphs('model');
             $table->boolean('positive')->nullable();
             $table->boolean('negative')->nullable();
@@ -53,8 +49,7 @@ return new class () extends Migration {
 
         Schema::create('abusive_reports', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->uuidMorphs('model');
             $table->text('message');
             $table->timestamps();
@@ -62,10 +57,8 @@ return new class () extends Migration {
 
         Schema::create('wishlists', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->uuid('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

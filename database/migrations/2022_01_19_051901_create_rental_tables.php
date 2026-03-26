@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Ecommerce\Enums\ResourceType;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -16,8 +19,7 @@ return new class () extends Migration {
 
         Schema::create('products_meta', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->string('type')->default('null');
             $table->string('key')->index();
             $table->text('value')->nullable();
@@ -32,10 +34,8 @@ return new class () extends Migration {
             $table->integer('order_quantity');
             $table->string('bookable_type');
             $table->uuid('bookable_id');
-            $table->uuid('order_id')->nullable();
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            // $table->foreignUuid('order_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 
@@ -53,42 +53,31 @@ return new class () extends Migration {
         });
 
         Schema::create('dropoff_location_product', function (Blueprint $table): void {
-            $table->uuid('resource_id')->nullable();
-            $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('resource_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
         });
 
         Schema::create('pickup_location_product', function (Blueprint $table): void {
-            $table->uuid('resource_id')->nullable();
-            $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('resource_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
         });
 
         Schema::create('feature_product', function (Blueprint $table): void {
-            $table->uuid('resource_id')->nullable();
-            $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('resource_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
         });
         Schema::create('deposit_product', function (Blueprint $table): void {
-            $table->uuid('resource_id')->nullable();
-            $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('resource_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
         });
 
         Schema::create('person_product', function (Blueprint $table): void {
-            $table->uuid('resource_id')->nullable();
-            $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('resource_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
         });
 
         // Schema::table('availabilities', function (Blueprint $table) {
-        //     $table->uuid('order_id')->nullable()->after('bookable_id');
-        //     $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+        //     $table->foreignUuid('order_id')->nullable()->after('bookable_id')->constrained()->cascadeOnDelete();
         // });
     }
 

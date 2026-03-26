@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -21,8 +24,7 @@ return new class () extends Migration {
             $table->boolean('is_disable')->default(false);
             $table->string('sku')->nullable();
             $table->json('options');
-            $table->uuid('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignUuid('product_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 
@@ -33,19 +35,17 @@ return new class () extends Migration {
             $table->string('icon')->nullable();
             $table->json('image')->nullable();
             $table->text('details')->nullable();
-            $table->uuid('type_id');
-            $table->foreign('type_id')->references('id')->on('types');
+            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
 
         Schema::create('product_tag', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('product_id');
-            $table->uuid('tag_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('tag_id')->constrained()->cascadeOnDelete();
         });
+        
         Schema::table('products', function (Blueprint $table): void {
             $table->float('min_price')->after('sale_price')->nullable();
             $table->float('max_price')->after('min_price')->nullable();
@@ -54,12 +54,11 @@ return new class () extends Migration {
 
         Schema::create('banners', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('type_id');
+            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
             $table->text('title');
             $table->text('description')->nullable();
             $table->json('image')->nullable();
             $table->timestamps();
-            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
         });
     }
 

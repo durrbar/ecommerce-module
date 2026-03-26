@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -13,10 +16,8 @@ return new class () extends Migration {
     public function up()
     {
         Schema::table('products', function (Blueprint $table): void {
-            $table->uuid('author_id')->nullable();
-            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
-            $table->uuid('manufacturer_id')->nullable();
-            $table->foreign('manufacturer_id')->references('id')->on('manufacturers')->onDelete('cascade');
+            $table->foreignUuid('author_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('manufacturer_id')->nullable()->constrained()->cascadeOnDelete();
             $table->boolean('is_digital')->default(0);
             $table->boolean('is_external')->default(0);
             $table->string('external_product_url')->nullable();
