@@ -12,7 +12,7 @@ INSERT INTO `commissions` (
         `updated_at`
     )
 VALUES (
-        79,
+        'f6ed1234-f2fd-5502-abd1-9696ec018ee8',
         'Level One',
         'Charges for listing a product on the platform.',
         'Earn attractive commissions with every sale! Our competitive rates reward your hard work and dedication, motivating you to achieve more. Join our sales team and turn your efforts into substantial earnings.',
@@ -25,7 +25,7 @@ VALUES (
         '2024-06-12 11:31:46'
     ),
     (
-        83,
+        '3dce912c-beeb-55bf-acff-21d88a860b08',
         'Level Two',
         'Charges for sales in a product on the platform.',
         'Get lucrative commissions on each sale! Our affordable prices encourage you to work harder and accomplish more by rewarding your diligence and hard work. Become a member of our sales team and make a big income from your efforts.',

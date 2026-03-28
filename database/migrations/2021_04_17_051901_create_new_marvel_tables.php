@@ -52,6 +52,10 @@ return new class() extends Migration
             $table->json('video')->after('image')->nullable();
         });
 
+        Schema::table('order_product', function (Blueprint $table) {
+            $table->foreignUuid('variation_option_id')->after('product_id')->nullable()->constrained();
+        });
+
         Schema::create('banners', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();

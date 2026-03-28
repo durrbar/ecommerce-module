@@ -88,8 +88,8 @@ return new class() extends Migration
             $table->string('icon')->nullable();
             $table->json('image')->nullable();
             $table->text('details')->nullable();
-            $table->foreignUuid('parent')->constrained('categories')->cascadeOnDelete()->nullable();
-            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('parent')->nullable()->constrained('categories')->cascadeOnDelete();
+            $table->foreignUuid('type_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
