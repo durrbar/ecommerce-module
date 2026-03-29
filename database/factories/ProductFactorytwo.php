@@ -8,7 +8,7 @@ use Modules\Ecommerce\Models\Product;
 use Modules\Ecommerce\Models\Variant;
 use Modules\User\Models\User;
 
-class ProductFactory extends Factory
+class ProductFactorytwo extends Factory
 {
     protected $model = Product::class;
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -73,6 +71,15 @@ return new class() extends Migration
      */
     public function down()
     {
+        if (Schema::hasTable('order_product')) {
+            Schema::table('order_product', function (Blueprint $table): void {
+                if (Schema::hasColumn('order_product', 'variation_option_id')) {
+                    $table->dropForeign(['variation_option_id']);
+                    $table->dropColumn('variation_option_id');
+                }
+            });
+        }
+
         Schema::dropIfExists('banners');
         Schema::dropIfExists('withdraws');
         Schema::dropIfExists('store_settings');
