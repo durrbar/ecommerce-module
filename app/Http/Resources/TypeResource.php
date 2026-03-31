@@ -21,7 +21,7 @@ class TypeResource extends Resource
             'language' => $this->language,
             'translated_languages' => $this->translated_languages,
             'slug' => $this->slug,
-            'banners' => BannerResource::collection($this->banners),
+            'banners' => BannerResource::collection($this->relationLoaded('banners') ? $this->banners : collect()),
             'promotional_sliders' => $this->promotional_sliders,
             'settings' => $this->settings,
             'icon' => $this->icon,

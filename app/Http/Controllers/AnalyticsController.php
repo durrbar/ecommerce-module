@@ -32,7 +32,7 @@ class AnalyticsController extends CoreController
             // if (!$user || !$user->hasPermissionTo(Permission::STORE_OWNER)) {
             //     throw new AuthenticationException();
             // }
-            $shops = $user?->shops->pluck('id') ?? [];
+            $shops = $user ? $user->shops()->pluck('id') : collect();
 
             // Total revenue
             $totalRevenueQuery = DB::table('orders as childOrder')
@@ -164,7 +164,7 @@ class AnalyticsController extends CoreController
                     DB::raw("DATE_FORMAT(A.created_at, '%M') as month")
                 );
         } else {
-            $shops = $user ? $user->shops->pluck('id') : [];
+            $shops = $user ? $user->shops()->pluck('id') : collect();
             $query->whereNotNull('A.parent_id')
                 ->join('orders as B', 'A.parent_id', '=', 'B.id')
                 ->whereIn('A.shop_id', $shops)
@@ -203,7 +203,7 @@ class AnalyticsController extends CoreController
                 break;
 
             case $user->hasPermissionTo(Permission::STORE_OWNER):
-                $shops = $user?->shops->pluck('id') ?? [];
+                $shops = $user ? $user->shops()->pluck('id') : collect();
                 $query = DB::table('orders as A')
                     ->where('A.parent_id', '!=', null)
                     ->whereDate('A.created_at', '>', Carbon::now()->subDays($days))

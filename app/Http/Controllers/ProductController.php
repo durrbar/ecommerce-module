@@ -66,7 +66,7 @@ class ProductController extends CoreController
         $unavailableProducts = [];
         $language = $request->language ? $request->language : DEFAULT_LANGUAGE;
 
-        $products_query = $this->repository->where('language', $language);
+        $products_query = $this->repository->with(['type', 'shop'])->where('language', $language);
 
         if (isset($request->date_range)) {
             $dateRange = explode('//', $request->date_range);
@@ -144,7 +144,21 @@ class ProductController extends CoreController
             $language = $request->language ?? DEFAULT_LANGUAGE;
             $user = $request->user();
             $limit = isset($request->limit) ? $request->limit : 10;
-            $product = $this->repository->where('language', $language)->where('slug', $slug)->orWhere('id', $slug)->firstOrFail();
+            $product = $this->repository->with([
+                'type',
+                'categories',
+                'tags',
+                'metas',
+                'digital_file',
+                'variations',
+                'variation_options',
+                'shop',
+                'author',
+                'manufacturer',
+            ])->where('language', $language)
+                ->where(function ($query) use ($slug): void {
+                    $query->where('slug', $slug)->orWhere('id', $slug);
+                })->firstOrFail();
             if (
                 in_array('variation_options.digital_file', explode(';', $request->with)) || in_array('digital_file', explode(';', $request->with))
             ) {
@@ -664,14 +678,14 @@ class ProductController extends CoreController
 
         switch ($user) {
             case $user->hasPermissionTo(Permission::SUPER_ADMIN):
-                return $products_query->whereIn('shop_id', $user->shops->pluck('id'));
+                return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
                 break;
 
             case $user->hasPermissionTo(Permission::STORE_OWNER):
                 if (isset($request->shop_id)) {
                     return $products_query->where('shop_id', '=', $request->shop_id);
                 } else {
-                    return $products_query->whereIn('shop_id', $user->shops->pluck('id'));
+                    return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
                 }
                 break;
 
@@ -679,7 +693,7 @@ class ProductController extends CoreController
                 if (isset($request->shop_id)) {
                     return $products_query->where('shop_id', '=', $request->shop_id);
                 } else {
-                    return $products_query->where('shop_id', $user->managed_shop->id);
+                    return $products_query->where('shop_id', $user->managed_shop()->value('id'));
                 }
                 break;
         }
@@ -726,7 +740,7 @@ class ProductController extends CoreController
                     return $products_query->where('shop_id', '=', $request->shop_id);
                 } else {
                     // overall shops
-                    return $products_query->whereIn('shop_id', $user->shops->pluck('id'));
+                    return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
                 }
                 break;
 

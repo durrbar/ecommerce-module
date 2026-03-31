@@ -57,10 +57,11 @@ class TermsAndConditionsController extends CoreController
                         break;
 
                     case $user->hasPermissionTo(Permission::STORE_OWNER):
+                        $shopIds = $user->shops()->pluck('id');
                         if ($this->repository->hasPermission($user, $request->shop_id)) {
                             return $this->repository->with('shop')->where('shop_id', '=', $request->shop_id)->where('language', $language);
                         } else {
-                            return $this->repository->with('shop')->where('user_id', '=', $user->id)->where('language', $language)->whereIn('shop_id', $user->shops->pluck('id'));
+                            return $this->repository->with('shop')->where('user_id', '=', $user->id)->where('language', $language)->whereIn('shop_id', $shopIds);
                         }
                         break;
 

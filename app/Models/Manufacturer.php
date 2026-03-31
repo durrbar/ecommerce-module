@@ -47,6 +47,10 @@ class Manufacturer extends Model
 
     public function getProductsCountAttribute()
     {
+        if (array_key_exists('products_count', $this->getAttributes())) {
+            return (int) $this->getAttributes()['products_count'];
+        }
+
         return $this->products()->count();
     }
 

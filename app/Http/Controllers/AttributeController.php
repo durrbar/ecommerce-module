@@ -68,11 +68,11 @@ class AttributeController extends CoreController
             $language = $request->language ?? DEFAULT_LANGUAGE;
             if (is_numeric($params)) {
                 $params = (int) $params;
-                $attribute = $this->repository->with('values')->where('id', $params)->firstOrFail();
+                $attribute = $this->repository->with(['values', 'shop'])->where('id', $params)->firstOrFail();
 
                 return new AttributeResource($attribute);
             }
-            $attribute = $this->repository->with('values')->where('slug', $params)->where('language', $language)->firstOrFail();
+            $attribute = $this->repository->with(['values', 'shop'])->where('slug', $params)->where('language', $language)->firstOrFail();
 
             return new AttributeResource($attribute);
         } catch (DurrbarException $e) {
@@ -102,7 +102,7 @@ class AttributeController extends CoreController
 
         if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
             try {
-                $attribute = $this->repository->with('values')->findOrFail($request->id);
+                $attribute = $this->repository->with(['values', 'shop'])->findOrFail($request->id);
             } catch (\Exception $e) {
                 throw new HttpException(404, NOT_FOUND);
             }

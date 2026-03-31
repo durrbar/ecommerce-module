@@ -16,12 +16,24 @@ trait TranslationTrait
     public function getTranslatedLanguagesAttribute()
     {
         if ($this->table === 'coupons') {
-            $translatedProducts = $this->where('code', $this->code)->get();
+            $code = $this->getAttributes()['code'] ?? null;
+
+            if ($code === null) {
+                return [];
+            }
+
+            $translatedProducts = static::query()->where('code', $code)->get();
 
             return $translatedProducts->pluck('language')->toArray();
         }
 
-        $translatedProducts = $this->where('slug', $this->slug)->get();
+        $slug = $this->getAttributes()['slug'] ?? null;
+
+        if ($slug === null) {
+            return [];
+        }
+
+        $translatedProducts = static::query()->where('slug', $slug)->get();
 
         return $translatedProducts->pluck('language')->toArray();
     }

@@ -22,8 +22,8 @@ class AttributeResource extends Resource
             'language' => $this->language,
             'translated_languages' => $this->translated_languages,
             'slug' => $this->slug,
-            'type' => getResourceData($this->type, []), // if you need extra data then pass key in array by second parameter
-            'values' => AttributeValueResource::collection($this->values),
+            'type' => $this->whenLoaded('type', fn () => getResourceData($this->type, []), null), // if you need extra data then pass key in array by second parameter
+            'values' => AttributeValueResource::collection($this->whenLoaded('values')),
         ];
     }
 }

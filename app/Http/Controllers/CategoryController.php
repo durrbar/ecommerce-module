@@ -64,7 +64,7 @@ class CategoryController extends CoreController
         $selfId = $request->self;
         $limit = $request->limit ?? 15;
 
-        $categoriesQuery = $this->repository->with(['type', 'parent', 'children'])
+        $categoriesQuery = $this->repository->with(['type', 'parentCategory', 'children'])
             ->where('language', $language);
 
         if ($parent === 'null') {

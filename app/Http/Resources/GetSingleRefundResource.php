@@ -19,15 +19,15 @@ class GetSingleRefundResource extends Resource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'refund_reason' => $this->refund_reason,
+            'refund_reason' => $this->whenLoaded('refund_reason', fn () => $this->refund_reason),
             'description' => $this->description,
             'amount' => $this->amount,
             'status' => $this->status,
             'images' => $this->images,
-            'customer' => [
-                'email' => $this->customer->email,
-            ],
-            'order' => $this->getOrderData($this->order),
+            'customer' => $this->whenLoaded('customer', fn () => [
+                'email' => $this->customer?->email,
+            ], ['email' => null]),
+            'order' => $this->whenLoaded('order', fn () => $this->getOrderData($this->order)),
             'created_at' => $this->created_at,
         ];
     }
@@ -36,6 +36,8 @@ class GetSingleRefundResource extends Resource
 
     private function getOrderData($data)
     {
+        $products = $data->relationLoaded('products') ? $data->products : collect();
+
         return [
             'id' => $data->id,
             'tracking_number' => $data->tracking_number,
@@ -48,7 +50,7 @@ class GetSingleRefundResource extends Resource
             'discount' => $data->discount,
             'delivery_fee' => $data->delivery_fee,
             'order_status' => $data->order_status,
-            'products' => $this->getProductData($data->products),
+            'products' => $this->getProductData($products),
             'paid_total' => $data->paid_total,
             'created_at' => $this->created_at,
         ];

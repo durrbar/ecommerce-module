@@ -28,7 +28,7 @@ class FlashSaleResource extends Resource
             'sale_builder' => $this->sale_builder,
             'image' => $this->image,
             'cover_image' => $this->cover_image,
-            'products' => ProductResource::collection($this->products),
+            'products' => ProductResource::collection($this->relationLoaded('products') ? $this->products : collect()),
             'language' => $this->language,
             'deleted_at' => $this->deleted_at,
             'created_at' => $this->created_at,

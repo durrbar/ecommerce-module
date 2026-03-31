@@ -35,9 +35,7 @@ class Category extends Model
      */
     public function getParentIdAttribute()
     {
-        if (isset($this->attributes['parent'])) {
-            return $this->parent;
-        }
+        return $this->getAttributes()['parent'] ?? null;
     }
 
     public function scopeWithUniqueSlugConstraints(Builder $query, Model $model): Builder

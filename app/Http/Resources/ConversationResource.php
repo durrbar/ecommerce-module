@@ -4,6 +4,7 @@ namespace Modules\Ecommerce\Http\Resources;
 
 use Illuminate\Http\Request;
 use Modules\Core\Http\Resources\Resource;
+use Modules\User\Http\Resources\UserResource;
 
 class ConversationResource extends Resource
 {
@@ -19,18 +20,18 @@ class ConversationResource extends Resource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'user' => $this->when($this->needToInclude($request, 'conversation.user'), function () {
-                return new UserResource($this->user);
+                return $this->whenLoaded('user', fn () => new UserResource($this->user));
             }),
             'to_user_id' => $this->to_user_id,
             'to_user' => $this->when($this->needToInclude($request, 'conversation.to_user'), function () {
-                return new UserResource($this->to_user);
+                return $this->whenLoaded('to_user', fn () => new UserResource($this->to_user));
             }),
             'shop_id' => $this->shop_id,
             'shop' => $this->when($this->needToInclude($request, 'conversation.shop'), function () {
-                return new ShopResource($this->shop);
+                return $this->whenLoaded('shop', fn () => new ShopResource($this->shop));
             }),
             'messages' => $this->when($this->needToInclude($request, 'conversation.messages'), function () {
-                return new MessageResourceCollection($this->messages);
+                return $this->whenLoaded('messages', fn () => new MessageResourceCollection($this->messages));
             }),
             'latest_message' => new MessageResource($this->latest_message),
             'unseen' => $this->unseen,

@@ -28,7 +28,7 @@ class ManufacturerResource extends Resource
             'socials' => $this->socials,
             'image' => $this->image,
             'cover_image' => $this->cover_image,
-            'type' => getResourceData($this->type, []), // if you need extra data then pass key in array by second parameter
+            'type' => $this->whenLoaded('type', fn () => getResourceData($this->type, [])), // if you need extra data then pass key in array by second parameter
         ];
     }
 }

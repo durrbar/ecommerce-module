@@ -30,7 +30,7 @@ class TypeController extends CoreController
     public function index(Request $request)
     {
         $language = $request->language ?? DEFAULT_LANGUAGE;
-        $types = $this->repository->where('language', $language)->get();
+        $types = $this->repository->with('banners')->where('language', $language)->get();
 
         return TypeResource::collection($types);
     }

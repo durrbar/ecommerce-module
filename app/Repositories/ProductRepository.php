@@ -167,7 +167,7 @@ class ProductRepository extends BaseRepository
                         $products_query = $products_query->where('in_flash_sale', '=', true);
                     }
                 } else {
-                    $products_query = $products_query->where('in_flash_sale', '=', true)->whereIn('shop_id', $user->shops->pluck('id'));
+                    $products_query = $products_query->where('in_flash_sale', '=', true)->whereIn('shop_id', $user->shops()->pluck('id'));
                 }
 
                 break;
