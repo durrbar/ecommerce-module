@@ -13,11 +13,14 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Kodeine\Metable\Metable;
@@ -75,17 +78,12 @@ class Product extends Model
         return $query->where('language', $model->language);
     }
 
-    /**
-     * Get the user's full name.
-     *
-     * @return string
-     */
-    public function getBlockedDatesAttribute()
+    public function getBlockedDatesAttribute(): array
     {
         return $this->getBlockedDates();
     }
 
-    public function getBlockedDates()
+    public function getBlockedDates(): array
     {
         $_blockedDates = $this->fetchBlockedDatesForAProduct();
         $_flatBlockedDates = [];
@@ -101,7 +99,7 @@ class Product extends Model
         return $_flatBlockedDates;
     }
 
-    public function fetchBlockedDatesForAProduct()
+    public function fetchBlockedDatesForAProduct(): Collection
     {
         return Availability::where('product_id', $this->id)->where('bookable_type', 'Modules\Ecommerce\Database\Models\Product')->whereDate('to', '>=', Carbon::now())->get();
     }
@@ -171,22 +169,22 @@ class Product extends Model
         return $this->hasMany(Wishlist::class, 'product_id');
     }
 
-    public function getRatingsAttribute()
+    public function getRatingsAttribute(): float
     {
         return round($this->reviews()->avg('rating'), 2);
     }
 
-    public function getTotalReviewsAttribute()
+    public function getTotalReviewsAttribute(): int
     {
         return $this->reviews()->count();
     }
 
-    public function getRatingCountAttribute()
+    public function getRatingCountAttribute(): Collection
     {
         return $this->reviews()->orderBy('rating', 'DESC')->groupBy('rating')->select('rating', DB::raw('count(*) as total'))->get();
     }
 
-    public function getMyReviewAttribute()
+    public function getMyReviewAttribute(): ?Collection
     {
         if (auth()->user() && ! empty($this->reviews()->where('user_id', auth()->user()->id)->first())) {
             return $this->reviews()->where('user_id', auth()->user()->id)->get();
@@ -195,7 +193,7 @@ class Product extends Model
         return null;
     }
 
-    public function getInWishlistAttribute()
+    public function getInWishlistAttribute(): bool
     {
         if (auth()->user() && ! empty($this->wishlists()->where('user_id', auth()->user()->id)->first())) {
             return true;
@@ -204,12 +202,12 @@ class Product extends Model
         return false;
     }
 
-    public function digital_file()
+    public function digital_file(): MorphOne
     {
         return $this->morphOne(DigitalFile::class, 'fileable');
     }
 
-    public function availabilities()
+    public function availabilities(): MorphMany
     {
         return $this->morphMany(Availability::class, 'bookable');
     }
@@ -252,7 +250,7 @@ class Product extends Model
         return $this->belongsToMany(FlashSaleRequests::class, 'flash_sale_requests_products');
     }
 
-    public function loadRelated($slug, $limit = 10, $language = DEFAULT_LANGUAGE)
+    public function loadRelated(string $slug, int $limit = 10, string $language = DEFAULT_LANGUAGE): self
     {
         $relatedProducts = [];
         try {
