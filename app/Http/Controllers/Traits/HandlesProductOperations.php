@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers\Traits;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Modules\Common\Facades\ErrorHelper;
@@ -33,6 +36,20 @@ trait HandlesProductOperations
 
     private const ERROR_LATEST = 'Failed to retrieve latest products';
 
+    /**
+     * Handle error responses.
+     *
+     * @param  string  $message  The error message to be logged and returned in the response.
+     * @param  Request|null  $request  The HTTP request that triggered the error, if available.
+     * @param  int  $statusCode  The HTTP status code for the response (default is 500).
+     * @return JsonResponse A JSON response containing the success status and error message.
+     */
+    protected function handleError(string $message, ?Request $request = null, int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
+    {
+        // Use the ErrorHelper facade for error handling
+        return ErrorHelper::handleError($message, $request, $statusCode);
+    }
+
     private function loadProductRelations(Product $product): Product
     {
         return $product->load(['variants', 'tags', 'images']);
@@ -49,7 +66,7 @@ trait HandlesProductOperations
         $this->processNewImageFiles($product, $incomingFiles);
     }
 
-    private function filterIncomingImages($images, bool $isUrl): \Illuminate\Support\Collection
+    private function filterIncomingImages($images, bool $isUrl): Collection
     {
         return collect($images)->filter(function ($image) use ($isUrl) {
             return $isUrl ? is_string($image) : $image instanceof UploadedFile;
@@ -86,19 +103,5 @@ trait HandlesProductOperations
         Cache::forget(self::CACHE_PUBLIC_PRODUCTS.'*');
         Cache::forget(self::CACHE_FEATURED_PRODUCTS);
         Cache::forget(self::CACHE_LATEST_PRODUCTS);
-    }
-
-    /**
-     * Handle error responses.
-     *
-     * @param  string  $message  The error message to be logged and returned in the response.
-     * @param  Request|null  $request  The HTTP request that triggered the error, if available.
-     * @param  int  $statusCode  The HTTP status code for the response (default is 500).
-     * @return JsonResponse A JSON response containing the success status and error message.
-     */
-    protected function handleError(string $message, ?Request $request = null, int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
-    {
-        // Use the ErrorHelper facade for error handling
-        return ErrorHelper::handleError($message, $request, $statusCode);
     }
 }

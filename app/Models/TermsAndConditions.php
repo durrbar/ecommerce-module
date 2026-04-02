@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -12,18 +18,15 @@ use Modules\Ecommerce\Traits\TranslationTrait;
 use Modules\User\Models\User;
 use Modules\Vendor\Models\Shop as ModelsShop;
 
+#[Table('terms_and_conditions')]
+#[Unguarded]
+#[Appends(['translated_languages'])]
 class TermsAndConditions extends Model
 {
     use HasUuids;
     use Sluggable;
     use SoftDeletes;
     use TranslationTrait;
-
-    protected $table = 'terms_and_conditions';
-
-    protected $appends = ['translated_languages'];
-
-    public $guarded = [];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -37,7 +40,8 @@ class TermsAndConditions extends Model
         ];
     }
 
-    public function scopeWithUniqueSlugConstraints(Builder $query, Model $model): Builder
+    #[Scope]
+    public function withUniqueSlugConstraints(Builder $query, Model $model): Builder
     {
         return $query->where('language', $model->language);
     }

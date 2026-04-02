@@ -12,7 +12,7 @@ use Modules\Ecommerce\Models\Product;
 use Modules\Ecommerce\Models\Variation;
 use Modules\Vendor\Models\FlashSale;
 
-final class FlashSaleProductProcess implements ShouldQueue
+class FlashSaleProductProcess implements ShouldQueue
 {
     public function handle(FlashSaleProcessed $event)
     {

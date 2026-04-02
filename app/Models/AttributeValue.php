@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -10,19 +16,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Ecommerce\Traits\TranslationTrait;
 
+#[Table('attribute_values')]
+#[Unguarded]
+#[Appends(['translated_languages'])]
 class AttributeValue extends Model
 {
     use HasUuids;
     use Sluggable;
     use TranslationTrait;
 
-    protected $table = 'attribute_values';
-
-    public $guarded = [];
-
-    protected $appends = ['translated_languages'];
-
-    public function scopeWithUniqueSlugConstraints(Builder $query, Model $model): Builder
+    #[Scope]
+    public function withUniqueSlugConstraints(Builder $query, Model $model): Builder
     {
         return $query->where('language', $model->language);
     }

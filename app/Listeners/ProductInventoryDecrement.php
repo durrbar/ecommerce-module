@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Exception;
@@ -9,7 +11,31 @@ use Modules\Ecommerce\Models\Variation;
 
 class ProductInventoryDecrement implements ShouldQueue
 {
-    protected function updateProductInventory($eventData)
+    // public function updateTranslationsInventory($product, $updatedQuantity, $sold_quantity)
+    // {
+    //     Product::where('id', $product->id)->update([
+    //         'quantity' => $updatedQuantity,
+    //         'sold_quantity' => $sold_quantity
+    //     ]);
+    // }
+
+    // public function updateVariationTranslationsInventory($variationOption, $updatedQuantity)
+    // {
+    //     Variation::where('id', $variationOption->id)->update([
+    //         'quantity' => $updatedQuantity,
+    //         'sold_quantity' => $variationOption->sold_quantity
+    //     ]);
+    // }
+
+    public function handle($event)
+    {
+        $products = $event->order->products;
+        foreach ($products as $product) {
+            $this->updateProductInventory($product);
+        }
+    }
+
+    private function updateProductInventory($eventData)
     {
         try {
             $fetchedProduct = Product::findOrFail($eventData->id);
@@ -61,30 +87,6 @@ class ProductInventoryDecrement implements ShouldQueue
             }
         } catch (Exception $th) {
             //
-        }
-    }
-
-    // public function updateTranslationsInventory($product, $updatedQuantity, $sold_quantity)
-    // {
-    //     Product::where('id', $product->id)->update([
-    //         'quantity' => $updatedQuantity,
-    //         'sold_quantity' => $sold_quantity
-    //     ]);
-    // }
-
-    // public function updateVariationTranslationsInventory($variationOption, $updatedQuantity)
-    // {
-    //     Variation::where('id', $variationOption->id)->update([
-    //         'quantity' => $updatedQuantity,
-    //         'sold_quantity' => $variationOption->sold_quantity
-    //     ]);
-    // }
-
-    public function handle($event)
-    {
-        $products = $event->order->products;
-        foreach ($products as $product) {
-            $this->updateProductInventory($product);
         }
     }
 }

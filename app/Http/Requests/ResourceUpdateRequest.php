@@ -10,7 +10,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rules\Enum;
 use Modules\Ecommerce\Enums\ResourceType;
 
-final class ResourceUpdateRequest extends FormRequest
+class ResourceUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Repositories;
 
 use Modules\Core\Repositories\BaseRepository;
@@ -8,6 +10,7 @@ use Modules\Ecommerce\Models\AttributeValue;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Exceptions\RepositoryException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class AttributeRepository extends BaseRepository
 {
@@ -54,7 +57,7 @@ class AttributeRepository extends BaseRepository
             }
 
             return $attribute;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new HttpException(400, COULD_NOT_CREATE_THE_RESOURCE);
         }
     }
@@ -81,7 +84,7 @@ class AttributeRepository extends BaseRepository
             $attribute->update($request->only($this->dataArray));
 
             return $this->with('values')->findOrFail($attribute->id);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new HttpException(400, COULD_NOT_UPDATE_THE_RESOURCE);
         }
     }

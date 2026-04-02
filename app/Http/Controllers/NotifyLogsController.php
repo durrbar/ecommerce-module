@@ -15,7 +15,7 @@ use Modules\Role\Enums\Permission;
 use Modules\User\Repositories\UserRepository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-final class NotifyLogsController extends CoreController
+class NotifyLogsController extends CoreController
 {
     public $repository;
 

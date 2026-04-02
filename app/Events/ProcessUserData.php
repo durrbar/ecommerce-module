@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Events;
 
 class ProcessUserData
 {
-    protected $appData;
+    private $appData;
 
     /**
      * Create a new event instance.

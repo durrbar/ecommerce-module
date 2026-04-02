@@ -1,31 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Ecommerce\Traits\TranslationTrait;
 
+#[Table('authors')]
+#[Unguarded]
+#[Appends(['products_count', 'translated_languages'])]
 class Author extends Model
 {
     use HasUuids;
     use Sluggable;
     use TranslationTrait;
-
-    protected $table = 'authors';
-
-    public $guarded = [];
-
-    public $appends = ['products_count', 'translated_languages'];
-
-    protected $casts = [
-        'image' => 'json',
-        'cover_image' => 'json',
-        'socials' => 'json',
-    ];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -39,7 +36,8 @@ class Author extends Model
         ];
     }
 
-    public function scopeWithUniqueSlugConstraints(Builder $query, Model $model): Builder
+    #[Scope]
+    public function withUniqueSlugConstraints(Builder $query, Model $model): Builder
     {
         return $query->where('language', $model->language);
     }
@@ -56,5 +54,14 @@ class Author extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'author_id');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'image' => 'json',
+            'cover_image' => 'json',
+            'socials' => 'json',
+        ];
     }
 }

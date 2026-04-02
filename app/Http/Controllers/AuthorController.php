@@ -16,7 +16,7 @@ use Modules\Ecommerce\Http\Resources\AuthorResource;
 use Modules\Ecommerce\Repositories\AuthorRepository;
 use Modules\Role\Enums\Permission;
 
-final class AuthorController extends CoreController
+class AuthorController extends CoreController
 {
     public $repository;
 

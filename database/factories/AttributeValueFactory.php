@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Ecommerce\Models\AttributeValue;
 
 class AttributeValueFactory extends Factory
 {
-    protected $model = \Modules\Ecommerce\Models\AttributeValue::class;
+    protected $model = AttributeValue::class;
 
     public function definition()
     {

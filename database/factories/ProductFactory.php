@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -11,7 +13,6 @@ class ProductFactory extends Factory
 {
     protected $model = Product::class;
 
-
     public function definition(): array
     {
         $name = $this->faker->words(2, true);
@@ -21,8 +22,8 @@ class ProductFactory extends Factory
         $maxPrice = max($price, $minPrice);
 
         // small helper to create media object similar to SQL examples
-        $makeMedia = fn($id = null) => [
-            'id' => $id ? (string)$id : (string)$this->faker->numberBetween(500, 900),
+        $makeMedia = fn ($id = null) => [
+            'id' => $id ? (string) $id : (string) $this->faker->numberBetween(500, 900),
             'original' => $this->faker->imageUrl(800, 800, 'food'),
             'thumbnail' => $this->faker->imageUrl(200, 200, 'food'),
         ];
@@ -36,7 +37,7 @@ class ProductFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::slug($name . '-' . $this->faker->unique()->numberBetween(1, 9999)),
+            'slug' => Str::slug($name.'-'.$this->faker->unique()->numberBetween(1, 9999)),
             'description' => $this->faker->optional()->paragraphs(2, true),
             'type_id' => $this->faker->numberBetween(1, 5),
             'price' => $price,
@@ -45,7 +46,7 @@ class ProductFactory extends Factory
             'language' => 'en',
             'min_price' => $minPrice,
             'max_price' => $maxPrice,
-            'sku' => (string)$this->faker->unique()->numberBetween(1, 99999),
+            'sku' => (string) $this->faker->unique()->numberBetween(1, 99999),
             'quantity' => $this->faker->numberBetween(0, 1000),
             'sold_quantity' => 0,
             'in_stock' => $this->faker->boolean(90) ? 1 : 0,
@@ -72,14 +73,13 @@ class ProductFactory extends Factory
         ];
     }
 
-
     public function configure(): static
     {
         return $this->afterCreating(function (Product $product) {
             // attach random attribute values if table exists
             if (class_exists(AttributeValue::class)) {
                 $attributeValueIds = AttributeValue::inRandomOrder()->take(rand(0, 4))->pluck('id')->toArray();
-                if (!empty($attributeValueIds)) {
+                if (! empty($attributeValueIds)) {
                     $product->variations()->attach($attributeValueIds);
                 }
             }

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Repositories;
 
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
@@ -14,15 +17,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class WishlistRepository extends BaseRepository
 {
-    public function boot()
-    {
-        try {
-            $this->pushCriteria(app(RequestCriteria::class));
-        } catch (RepositoryException $e) {
-            //
-        }
-    }
-
     /**
      * @var array[]
      */
@@ -31,6 +25,15 @@ class WishlistRepository extends BaseRepository
         'product_id',
         'variation_option_id',
     ];
+
+    public function boot()
+    {
+        try {
+            $this->pushCriteria(app(RequestCriteria::class));
+        } catch (RepositoryException $e) {
+            //
+        }
+    }
 
     /**
      * Configure the Model
@@ -54,7 +57,7 @@ class WishlistRepository extends BaseRepository
 
                 return $this->create($wishlistInput);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new HttpException(400, ALREADY_ADDED_TO_WISHLIST_FOR_THIS_PRODUCT);
         }
     }
@@ -73,12 +76,12 @@ class WishlistRepository extends BaseRepository
                 $this->create($wishlistInput);
 
                 return true;
-            } else {
-                $this->delete($wishlist->id);
-
-                return false;
             }
-        } catch (\Exception $e) {
+            $this->delete($wishlist->id);
+
+            return false;
+
+        } catch (Exception $e) {
             throw new DurrbarException(SOMETHING_WENT_WRONG);
         }
     }

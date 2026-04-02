@@ -31,7 +31,7 @@ use Modules\Role\Enums\Permission;
 use Modules\Settings\Repositories\SettingsRepository;
 use Modules\Tag\Models\Tag;
 
-final class ProductController extends CoreController
+class ProductController extends CoreController
 {
     public $repository;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Exception;
@@ -9,7 +11,25 @@ use Modules\Ecommerce\Models\Variation;
 
 class ProductInventoryRestore implements ShouldQueue
 {
-    protected function updateProductInventory($eventData)
+    // public function updateTranslationsInventory($product, $updatedQuantity)
+    // {
+    //     Product::where('sku', $product->sku)->update(['quantity' => $updatedQuantity]);
+    // }
+
+    // public function updateVariationTranslationsInventory($variationOption, $updatedQuantity)
+    // {
+    //     Variation::where('sku', $variationOption->sku)->update(['quantity' => $updatedQuantity]);
+    // }
+
+    public function handle($event)
+    {
+        $products = $event->order->products;
+        foreach ($products as $product) {
+            $this->updateProductInventory($product);
+        }
+    }
+
+    private function updateProductInventory($eventData)
     {
         try {
             $fetchedProduct = Product::findOrFail($eventData->id);
@@ -54,24 +74,6 @@ class ProductInventoryRestore implements ShouldQueue
             }
         } catch (Exception $th) {
             //
-        }
-    }
-
-    // public function updateTranslationsInventory($product, $updatedQuantity)
-    // {
-    //     Product::where('sku', $product->sku)->update(['quantity' => $updatedQuantity]);
-    // }
-
-    // public function updateVariationTranslationsInventory($variationOption, $updatedQuantity)
-    // {
-    //     Variation::where('sku', $variationOption->sku)->update(['quantity' => $updatedQuantity]);
-    // }
-
-    public function handle($event)
-    {
-        $products = $event->order->products;
-        foreach ($products as $product) {
-            $this->updateProductInventory($product);
         }
     }
 }

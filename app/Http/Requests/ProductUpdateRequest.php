@@ -12,7 +12,7 @@ use Illuminate\Validation\Rules\Enum;
 use Modules\Ecommerce\Enums\ProductStatus;
 use Modules\Ecommerce\Enums\ProductType;
 
-final class ProductUpdateRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

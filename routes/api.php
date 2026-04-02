@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use Modules\Ecommerce\Http\Controllers\EcommerceAdminController;
 use Modules\Ecommerce\Http\Controllers\EcommerceController;
@@ -20,7 +22,7 @@ Route::prefix('v1')->group(function (): void {
         Route::apiResource('products', EcommerceAdminController::class)->withTrashed()->names('products');
     });
 
-    Route::controller(ECommerceController::class)->name('products.')->prefix('products')->group(function (): void {
+    Route::controller(EcommerceController::class)->name('products.')->prefix('products')->group(function (): void {
 
         Route::get('featureds', 'featured')->name('featured');
 
@@ -29,5 +31,5 @@ Route::prefix('v1')->group(function (): void {
         Route::get('search', 'search')->name('search');
     });
 
-    Route::apiResource('products', ECommerceController::class)->only(['index', 'show']);
+    Route::apiResource('products', EcommerceController::class)->only(['index', 'show']);
 });

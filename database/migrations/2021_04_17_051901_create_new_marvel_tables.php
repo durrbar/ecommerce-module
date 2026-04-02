@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -43,7 +45,7 @@ return new class() extends Migration
             $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('tag_id')->constrained()->cascadeOnDelete();
         });
-        
+
         Schema::table('products', function (Blueprint $table): void {
             $table->float('min_price')->after('sale_price')->nullable();
             $table->float('max_price')->after('min_price')->nullable();

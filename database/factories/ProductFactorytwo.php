@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,8 +26,8 @@ class ProductFactorytwo extends Factory
         return [
             'id' => Str::uuid(),
             'name' => $this->faker->words(5, true),
-            'sku' => strtoupper(Str::random(10)),
-            'code' => strtoupper(Str::random(12)),
+            'sku' => mb_strtoupper(Str::random(10)),
+            'code' => mb_strtoupper(Str::random(12)),
             'description' => $this->faker->paragraph(),
             'sub_description' => $this->faker->sentence(10),
             'price' => $this->faker->randomFloat(2, 10, 1000),

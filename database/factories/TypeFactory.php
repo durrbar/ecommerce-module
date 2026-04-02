@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Factories;
 
-use Modules\Ecommerce\Models\Type;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Ecommerce\Models\Type;
 
 class TypeFactory extends Factory
 {
@@ -16,7 +18,7 @@ class TypeFactory extends Factory
             'settings' => [
                 'isHome' => $this->faker->boolean,
                 'productCard' => $this->faker->randomElement(['helium', 'argon', 'xenon']),
-                'layoutType' => $this->faker->randomElement(['classic', 'standard', 'modern'])
+                'layoutType' => $this->faker->randomElement(['classic', 'standard', 'modern']),
             ],
             'slug' => $this->faker->unique()->slug,
             'language' => 'en',

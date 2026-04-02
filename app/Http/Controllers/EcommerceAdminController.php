@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -77,7 +80,7 @@ class EcommerceAdminController extends Controller
             $this->clearProductCache();
 
             return response()->json(['product' => $product, 'message' => 'Product created successfully!'], Response::HTTP_CREATED);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->handleError(self::ERROR_CREATE.': '.$e->getMessage(), $request);
         }
     }
@@ -120,7 +123,7 @@ class EcommerceAdminController extends Controller
             Cache::forget("product_{$product->id}");
 
             return response()->json(['product' => new ProductResource($product)]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->handleError(self::ERROR_UPDATE.': '.$e->getMessage(), $request);
         }
     }
@@ -147,7 +150,7 @@ class EcommerceAdminController extends Controller
             Cache::forget("product_{$product->id}");
 
             return response()->json(['message' => 'Product deleted successfully.'], Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->handleError(self::ERROR_DELETE.': '.$e->getMessage(), null);
         }
     }

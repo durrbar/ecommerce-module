@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Repositories;
 
 use Modules\Core\Repositories\BaseRepository;
@@ -80,7 +82,7 @@ class TypeRepository extends BaseRepository
             }
         }
         $data = $request->only($this->dataArray);
-        if (! empty($request->slug) && $request->slug != $type['slug']) {
+        if (! empty($request->slug) && $request->slug !== $type['slug']) {
             $data['slug'] = $this->makeSlug($request);
         }
         $type->update($data);

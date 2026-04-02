@@ -18,7 +18,7 @@ use Modules\Role\Enums\Permission;
 use Modules\User\Models\User;
 use Modules\Vendor\Models\Shop;
 
-final class AnalyticsController extends CoreController
+class AnalyticsController extends CoreController
 {
     public $addressRepository;
 

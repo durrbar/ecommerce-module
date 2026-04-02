@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -103,7 +106,7 @@ class AttributeController extends CoreController
         if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
             try {
                 $attribute = $this->repository->with(['values', 'shop'])->findOrFail($request->id);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new HttpException(404, NOT_FOUND);
             }
 
@@ -133,7 +136,7 @@ class AttributeController extends CoreController
     {
         try {
             $attribute = $this->repository->findOrFail($request->id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new HttpException(404, NOT_FOUND);
         }
         if ($this->repository->hasPermission($request->user(), $attribute->shop->id)) {

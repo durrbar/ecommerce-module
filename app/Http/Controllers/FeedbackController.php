@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -15,6 +17,8 @@ use Prettus\Validator\Exceptions\ValidatorException;
 
 class FeedbackController extends CoreController
 {
+    public $repository;
+
     /**
      * @var array[]
      */
@@ -25,8 +29,6 @@ class FeedbackController extends CoreController
         'negative',
         'user_id',
     ];
-
-    public $repository;
 
     public function __construct(FeedbackRepository $repository)
     {
@@ -68,13 +70,13 @@ class FeedbackController extends CoreController
             } else {
                 $positive = $feedback->positive;
                 $negative = $feedback->negative;
-                if ($request->input('positive') && $positive == null && $negative == true) {
+                if ($request->input('positive') && $positive === null && $negative === true) {
                     $feedback->update([
                         'positive' => true,
                         'negative' => null,
                     ]);
                 }
-                if ($request->input('negative') && $positive == true && $negative == null) {
+                if ($request->input('negative') && $positive === true && $negative === null) {
                     $feedback->update([
                         'positive' => null,
                         'negative' => true,

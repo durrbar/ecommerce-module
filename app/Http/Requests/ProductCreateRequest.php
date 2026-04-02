@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\Enum;
 use Modules\Ecommerce\Enums\ProductStatus;
 use Modules\Ecommerce\Enums\ProductType;
 
-final class ProductCreateRequest extends FormRequest
+class ProductCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

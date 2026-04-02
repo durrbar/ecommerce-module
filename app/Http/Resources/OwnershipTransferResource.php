@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Core\Http\Resources\Resource;
 use Modules\Order\Enums\OrderStatus;
 
-final class OwnershipTransferResource extends Resource
+class OwnershipTransferResource extends Resource
 {
     // public function orderInfoRelatedToShop($shop_id)
     // {

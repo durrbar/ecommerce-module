@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Exceptions\DurrbarException;
+use Throwable;
 
 trait TranslationTrait
 {
@@ -47,7 +50,7 @@ trait TranslationTrait
     {
         try {
             $translation = DB::table('translations')->where('item_id', $this->model->id)->where('item_type', get_class($this))->first();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new DurrbarException(NOT_FOUND);
         }
 

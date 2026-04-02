@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Seeders;
 
 use Carbon\Carbon;
@@ -95,74 +97,75 @@ class RefundReasonSeeder extends Seeder
 
         if (! TRANSLATION_ENABLED) {
             return [];
-        } else {
-            return [
-                [
-                    'name' => 'Produkt nicht wie beschrieben',
-                    'slug' => 'produkt-nicht-wie-beschrieben',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Falscher Artikel geliefert',
-                    'slug' => 'falscher-artikel-geliefert',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Beschädigter Artikel',
-                    'slug' => 'beschädigter-artikel',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Bestellung storniert',
-                    'slug' => 'bestellung-storniert',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Lieferung verzögert',
-                    'slug' => 'lieferung-verzögert',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Artikel nicht benötigt',
-                    'slug' => 'artikel-nicht-benötigt',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Meinung geändert',
-                    'slug' => 'meinung-geändert',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-                [
-                    'name' => 'Sonstiges',
-                    'slug' => 'sonstiges',
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'deleted_at' => null,
-                ],
-            ];
         }
+
+        return [
+            [
+                'name' => 'Produkt nicht wie beschrieben',
+                'slug' => 'produkt-nicht-wie-beschrieben',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Falscher Artikel geliefert',
+                'slug' => 'falscher-artikel-geliefert',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Beschädigter Artikel',
+                'slug' => 'beschädigter-artikel',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Bestellung storniert',
+                'slug' => 'bestellung-storniert',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Lieferung verzögert',
+                'slug' => 'lieferung-verzögert',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Artikel nicht benötigt',
+                'slug' => 'artikel-nicht-benötigt',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Meinung geändert',
+                'slug' => 'meinung-geändert',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'name' => 'Sonstiges',
+                'slug' => 'sonstiges',
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+        ];
+
     }
 
     // private function getEnglishDummyData(): array

@@ -30,7 +30,7 @@ use Spatie\Period\Precision;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
-final class ProductRepository extends BaseRepository
+class ProductRepository extends BaseRepository
 {
     /**
      * @var array

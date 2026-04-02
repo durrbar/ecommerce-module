@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -8,11 +10,6 @@ use Modules\Payment\Models\PaymentMethod;
 
 class CheckAndSetDefaultCard implements ShouldQueue
 {
-    protected function fetchAllPaymentMethods()
-    {
-        return PaymentMethod::all();
-    }
-
     /**
      * Handle the event.
      *
@@ -31,5 +28,10 @@ class CheckAndSetDefaultCard implements ShouldQueue
                 }
             }
         }
+    }
+
+    private function fetchAllPaymentMethods()
+    {
+        return PaymentMethod::all();
     }
 }

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Factories;
 
-use Modules\Ecommerce\Models\Manufacturer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Ecommerce\Models\Manufacturer;
+use Modules\Ecommerce\Models\Type;
 
 class ManufacturerFactory extends Factory
 {
@@ -24,12 +27,12 @@ class ManufacturerFactory extends Factory
             ],
             'slug' => $this->faker->unique()->slug,
             'language' => 'en',
-            'type_id' => \Modules\Ecommerce\Models\Type::factory(),
+            'type_id' => Type::factory(),
             'description' => $this->faker->paragraph,
             'website' => $this->faker->url,
             'socials' => [
                 ['icon' => 'FacebookIcon', 'url' => $this->faker->url],
-                ['icon' => 'TwitterIcon', 'url' => $this->faker->url]
+                ['icon' => 'TwitterIcon', 'url' => $this->faker->url],
             ],
             'created_at' => $this->faker->dateTimeBetween('-2 years'),
             'updated_at' => $this->faker->dateTimeBetween('-1 year'),

@@ -18,7 +18,7 @@ use Modules\Ecommerce\Repositories\FaqsRepository;
 use Modules\Role\Enums\Permission;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-final class FaqsController extends CoreController
+class FaqsController extends CoreController
 {
     public $repository;
 

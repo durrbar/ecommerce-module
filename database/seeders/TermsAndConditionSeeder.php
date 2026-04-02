@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Database\Seeders;
 
 use Carbon\Carbon;
@@ -97,82 +99,83 @@ class TermsAndConditionSeeder extends Seeder
     {
         if (! TRANSLATION_ENABLED) {
             return [];
-        } else {
-            return [
-                [
-                    'user_id' => 1,
-                    'shop_id' => null,
-                    'title' => 'Haftungsausschluss und Haftungsbeschränkung',
-                    'slug' => 'haftungsausschluss-und-haftungsbeschränkung',
-                    'description' => 'Die Website wird „wie besehen“ und „wie verfügbar“ ohne jegliche ausdrückliche oder stillschweigende Gewährleistung bereitgestellt. Pickbazar haftet nicht für direkte, indirekte, zufällige, besondere, Folge- oder Strafschäden, die sich aus der Nutzung oder Unmöglichkeit der Nutzung der Website ergeben.',
-                    'type' => 'global',
-                    'issued_by' => 'Super Admin',
-                    'is_approved' => true,
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => null,
-                    'deleted_at' => null,
-                ],
-                [
-
-                    'user_id' => 1,
-                    'shop_id' => null,
-                    'title' => 'Geistiges Eigentum',
-                    'slug' => 'geistiges-eigentum',
-                    'description' => 'Die Website und ihre ursprünglichen Inhalte, Merkmale und Funktionen sind Eigentum von [Ihrem Unternehmen] und durch internationale Urheber-, Marken- und andere Gesetze zum Schutz des geistigen Eigentums geschützt.',
-                    'type' => 'global',
-                    'issued_by' => 'Super Admin',
-                    'is_approved' => true,
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => null,
-                    'deleted_at' => null,
-                ],
-                [
-
-                    'user_id' => 1,
-                    'shop_id' => null,
-                    'title' => 'Datenschutzrichtlinie',
-                    'slug' => 'datenschutzrichtlinie',
-                    'description' => 'Ihre Nutzung der Website unterliegt außerdem unserer Datenschutzrichtlinie, die Sie unter [Link zur Datenschutzrichtlinie] finden. Durch die Nutzung der Website stimmen Sie den in der Datenschutzrichtlinie beschriebenen Praktiken zu.',
-                    'type' => 'global',
-                    'issued_by' => 'Super Admin',
-                    'is_approved' => true,
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => null,
-                    'deleted_at' => null,
-                ],
-                [
-
-                    'user_id' => 1,
-                    'shop_id' => null,
-                    'title' => 'Nutzung der Website',
-                    'slug' => 'nutzung-der-website',
-                    'description' => 'Sie müssen mindestens [Alter] Jahre alt sein, um diese Website nutzen zu können. Durch die Nutzung der Website erklären und garantieren Sie, dass Sie mindestens [Alter] Jahre alt sind. Sie erklären sich damit einverstanden, die Website nur für rechtmäßige Zwecke und in einer Weise zu nutzen, die nicht die Rechte anderer verletzt.',
-                    'type' => 'global',
-                    'issued_by' => 'Super Admin',
-                    'is_approved' => true,
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => null,
-                    'deleted_at' => null,
-                ],
-                [
-                    'user_id' => 1,
-                    'shop_id' => null,
-                    'title' => 'Annahme der Bedingungen',
-                    'slug' => 'annahme-der-bedingungen',
-                    'description' => 'Durch die Nutzung dieser Website erklären Sie sich damit einverstanden, diese Allgemeinen Geschäftsbedingungen einzuhalten und an sie gebunden zu sein. Wenn Sie diesen Bedingungen nicht zustimmen, nutzen Sie die Website bitte nicht.',
-                    'type' => 'global',
-                    'issued_by' => 'Super Admin',
-                    'is_approved' => true,
-                    'language' => 'de',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => null,
-                    'deleted_at' => null,
-                ],
-            ];
         }
+
+        return [
+            [
+                'user_id' => 1,
+                'shop_id' => null,
+                'title' => 'Haftungsausschluss und Haftungsbeschränkung',
+                'slug' => 'haftungsausschluss-und-haftungsbeschränkung',
+                'description' => 'Die Website wird „wie besehen“ und „wie verfügbar“ ohne jegliche ausdrückliche oder stillschweigende Gewährleistung bereitgestellt. Pickbazar haftet nicht für direkte, indirekte, zufällige, besondere, Folge- oder Strafschäden, die sich aus der Nutzung oder Unmöglichkeit der Nutzung der Website ergeben.',
+                'type' => 'global',
+                'issued_by' => 'Super Admin',
+                'is_approved' => true,
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+            [
+
+                'user_id' => 1,
+                'shop_id' => null,
+                'title' => 'Geistiges Eigentum',
+                'slug' => 'geistiges-eigentum',
+                'description' => 'Die Website und ihre ursprünglichen Inhalte, Merkmale und Funktionen sind Eigentum von [Ihrem Unternehmen] und durch internationale Urheber-, Marken- und andere Gesetze zum Schutz des geistigen Eigentums geschützt.',
+                'type' => 'global',
+                'issued_by' => 'Super Admin',
+                'is_approved' => true,
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+            [
+
+                'user_id' => 1,
+                'shop_id' => null,
+                'title' => 'Datenschutzrichtlinie',
+                'slug' => 'datenschutzrichtlinie',
+                'description' => 'Ihre Nutzung der Website unterliegt außerdem unserer Datenschutzrichtlinie, die Sie unter [Link zur Datenschutzrichtlinie] finden. Durch die Nutzung der Website stimmen Sie den in der Datenschutzrichtlinie beschriebenen Praktiken zu.',
+                'type' => 'global',
+                'issued_by' => 'Super Admin',
+                'is_approved' => true,
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+            [
+
+                'user_id' => 1,
+                'shop_id' => null,
+                'title' => 'Nutzung der Website',
+                'slug' => 'nutzung-der-website',
+                'description' => 'Sie müssen mindestens [Alter] Jahre alt sein, um diese Website nutzen zu können. Durch die Nutzung der Website erklären und garantieren Sie, dass Sie mindestens [Alter] Jahre alt sind. Sie erklären sich damit einverstanden, die Website nur für rechtmäßige Zwecke und in einer Weise zu nutzen, die nicht die Rechte anderer verletzt.',
+                'type' => 'global',
+                'issued_by' => 'Super Admin',
+                'is_approved' => true,
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+            [
+                'user_id' => 1,
+                'shop_id' => null,
+                'title' => 'Annahme der Bedingungen',
+                'slug' => 'annahme-der-bedingungen',
+                'description' => 'Durch die Nutzung dieser Website erklären Sie sich damit einverstanden, diese Allgemeinen Geschäftsbedingungen einzuhalten und an sie gebunden zu sein. Wenn Sie diesen Bedingungen nicht zustimmen, nutzen Sie die Website bitte nicht.',
+                'type' => 'global',
+                'issued_by' => 'Super Admin',
+                'is_approved' => true,
+                'language' => 'de',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+        ];
+
     }
 }

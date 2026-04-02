@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -29,11 +31,11 @@ class DigitalProductNotifyLogsListener implements ShouldQueue
         if (isset($event->product)) {
             $ordered_files = DB::table('ordered_files')
                 ->join('digital_files', 'ordered_files.digital_file_id', '=', 'digital_files.id')
-                ->when($event->product['product_type'] == 'variable', function ($query): void {
+                ->when($event->product['product_type'] === 'variable', function ($query): void {
                     $query->join('variation_options', 'digital_files.fileable_id', '=', 'variation_options.id')
                         ->join('products', 'products.id', '=', 'variation_options.product_id');
                 })
-                ->when($event->product['product_type'] == 'simple', function ($query): void {
+                ->when($event->product['product_type'] === 'simple', function ($query): void {
                     $query->join('products', 'products.id', '=', 'digital_files.fileable_id');
                 })
                 ->select(

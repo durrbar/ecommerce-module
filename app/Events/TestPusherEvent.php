@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -33,7 +35,7 @@ class TestPusherEvent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, Channel>
      */
     public function broadcastOn(): array
     {
@@ -41,7 +43,7 @@ class TestPusherEvent implements ShouldBroadcast
         if (isset($this->store_notice->users)) {
             foreach ($this->store_notice->users as $user) {
                 $channel_name = new PrivateChannel('store_notice.created.'.$user->id);
-                array_push($temp_event_channels, $channel_name);
+                $temp_event_channels[] = $channel_name;
             }
         }
         // return [

@@ -19,7 +19,7 @@ use Modules\Ecommerce\Repositories\TermsAndConditionsRepository;
 use Modules\Role\Enums\Permission;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-final class TermsAndConditionsController extends CoreController
+class TermsAndConditionsController extends CoreController
 {
     public $repository;
 

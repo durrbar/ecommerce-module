@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Models;
 
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Exception;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -26,39 +32,30 @@ use Modules\Vendor\Models\FlashSale;
 use Modules\Vendor\Models\FlashSaleRequests;
 use Modules\Vendor\Models\Shop;
 
+#[Table('products')]
+#[Unguarded]
+#[Appends([
+    'ratings',
+    'total_reviews',
+    'rating_count',
+    'my_review',
+    'in_wishlist',
+    'blocked_dates',
+    'translated_languages',
+])]
 class Product extends Model
 {
-    use HasUuids;
     use Excludable;
+    use HasUuids;
     use Metable;
     use Sluggable;
     use SoftDeletes;
     use TranslationTrait;
 
-    public $guarded = [];
-
-    protected $table = 'products';
-
-    protected $metaTable = 'products_meta'; // optional.
-
     // protected $disableFluentMeta = true;
     public $hideMeta = true;
 
-    protected $casts = [
-        'image' => 'json',
-        'gallery' => 'json',
-        'video' => 'json',
-    ];
-
-    protected $appends = [
-        'ratings',
-        'total_reviews',
-        'rating_count',
-        'my_review',
-        'in_wishlist',
-        'blocked_dates',
-        'translated_languages',
-    ];
+    protected $metaTable = 'products_meta'; // optional.
 
     /**
      * Return the sluggable configuration array for this model.
@@ -72,7 +69,8 @@ class Product extends Model
         ];
     }
 
-    public function scopeWithUniqueSlugConstraints(Builder $query, Model $model): Builder
+    #[Scope]
+    public function withUniqueSlugConstraints(Builder $query, Model $model): Builder
     {
         return $query->where('language', $model->language);
     }
@@ -148,7 +146,7 @@ class Product extends Model
         return $this->hasMany(Variation::class, 'product_id');
     }
 
-    public function orders(): belongsToMany
+    public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class)->withTimestamps();
     }
@@ -271,5 +269,14 @@ class Product extends Model
         $this->setRelation('related_products', $relatedProducts);
 
         return $this;
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'image' => 'json',
+            'gallery' => 'json',
+            'video' => 'json',
+        ];
     }
 }

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 
 class ProductRequest extends FormRequest
 {
@@ -30,7 +33,7 @@ class ProductRequest extends FormRequest
                         }
                     }
                     // Check if the image is a file
-                    elseif ($value instanceof \Illuminate\Http\UploadedFile) {
+                    elseif ($value instanceof UploadedFile) {
                         if (! $value->isValid()) {
                             $fail($attribute.' is not a valid file.');
                         }
@@ -96,6 +99,32 @@ class ProductRequest extends FormRequest
     }
 
     /**
+     * Customize the error messages for validation rules.
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Name is required!',
+            'description.required' => 'Description is required!',
+            'images.required' => 'Images are required!',
+            // 'code.required' => 'Product code is required!',
+            'sku.required' => 'Product SKU is required!',
+            'quantity.required' => 'Quantity is required!',
+            // 'colors.required' => 'Choose at least one color!',
+            // 'sizes.required' => 'Choose at least one size!',
+            'tags.min' => 'Must have at least 2 tags!',
+            // 'gender.required' => 'Choose at least one gender!',
+            'price.required' => 'Price should not be $0.00!',
+
+            'images.*.required' => 'Each image must be a valid URL or uploaded file.',
+            'images.*.url' => 'Each image must be a valid URL.',
+            'images.*.file' => 'Each image must be a valid file.',
+            'images.*.mimes' => 'Each image must be of type: jpg, jpeg, png, webp.',
+            'images.*.max' => 'Each image must be less than 2MB.',
+        ];
+    }
+
+    /**
      * Prepare the data for validation.
      */
     protected function prepareForValidation(): void
@@ -123,31 +152,5 @@ class ProductRequest extends FormRequest
             'new_label_enabled' => filter_var($this->input('newLabel.enabled'), FILTER_VALIDATE_BOOLEAN),
             'new_label_content' => $this->input('newLabel.content'),
         ]);
-    }
-
-    /**
-     * Customize the error messages for validation rules.
-     */
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'Name is required!',
-            'description.required' => 'Description is required!',
-            'images.required' => 'Images are required!',
-            // 'code.required' => 'Product code is required!',
-            'sku.required' => 'Product SKU is required!',
-            'quantity.required' => 'Quantity is required!',
-            // 'colors.required' => 'Choose at least one color!',
-            // 'sizes.required' => 'Choose at least one size!',
-            'tags.min' => 'Must have at least 2 tags!',
-            // 'gender.required' => 'Choose at least one gender!',
-            'price.required' => 'Price should not be $0.00!',
-
-            'images.*.required' => 'Each image must be a valid URL or uploaded file.',
-            'images.*.url' => 'Each image must be a valid URL.',
-            'images.*.file' => 'Each image must be a valid file.',
-            'images.*.mimes' => 'Each image must be of type: jpg, jpeg, png, webp.',
-            'images.*.max' => 'Each image must be less than 2MB.',
-        ];
     }
 }

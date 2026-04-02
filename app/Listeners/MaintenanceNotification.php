@@ -13,7 +13,7 @@ use Modules\Role\Enums\Permission;
 use Modules\Settings\Models\Settings;
 use Modules\User\Models\User;
 
-final class MaintenanceNotification
+class MaintenanceNotification
 {
     /**
      * Create the event listener.

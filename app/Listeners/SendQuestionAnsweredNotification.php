@@ -11,7 +11,7 @@ use Modules\Notification\Enums\EventType;
 use Modules\Notification\Traits\SmsTrait;
 use Modules\User\Models\User;
 
-final class SendQuestionAnsweredNotification implements ShouldQueue
+class SendQuestionAnsweredNotification implements ShouldQueue
 {
     use SmsTrait;
 

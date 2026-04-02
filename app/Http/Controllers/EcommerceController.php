@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -72,7 +75,7 @@ class EcommerceController extends Controller
             });
 
             return response()->json(['featureds' => ProductResource::collection($featureds)]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->handleError(self::ERROR_FEATURED.': '.$e->getMessage(), null);
         }
     }
@@ -87,7 +90,7 @@ class EcommerceController extends Controller
             });
 
             return response()->json(['latest' => $latest]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->handleError(self::ERROR_LATEST.': '.$e->getMessage(), null);
         }
     }

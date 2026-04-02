@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Exception;
@@ -10,7 +12,30 @@ use Modules\Order\Events\OrderCreated;
 
 class ManageProductInventory implements ShouldQueue
 {
-    protected function updateProductInventory($product)
+    public function updateTranslationsInventory($product, $updatedQuantity)
+    {
+        Product::where('sku', $product->sku)->update(['quantity' => $updatedQuantity]);
+    }
+
+    public function updateVariationTranslationsInventory($variationOption, $updatedQuantity)
+    {
+        Variation::where('sku', $variationOption->sku)->update(['quantity' => $updatedQuantity]);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @return void
+     */
+    public function handle(OrderCreated $event)
+    {
+        $products = $event->order->products;
+        foreach ($products as $product) {
+            $this->updateProductInventory($product);
+        }
+    }
+
+    private function updateProductInventory($product)
     {
         try {
             $updatedQuantity = $product->quantity - $product->pivot->order_quantity;
@@ -32,29 +57,6 @@ class ManageProductInventory implements ShouldQueue
             }
         } catch (Exception $th) {
             //
-        }
-    }
-
-    public function updateTranslationsInventory($product, $updatedQuantity)
-    {
-        Product::where('sku', $product->sku)->update(['quantity' => $updatedQuantity]);
-    }
-
-    public function updateVariationTranslationsInventory($variationOption, $updatedQuantity)
-    {
-        Variation::where('sku', $variationOption->sku)->update(['quantity' => $updatedQuantity]);
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @return void
-     */
-    public function handle(OrderCreated $event)
-    {
-        $products = $event->order->products;
-        foreach ($products as $product) {
-            $this->updateProductInventory($product);
         }
     }
 }

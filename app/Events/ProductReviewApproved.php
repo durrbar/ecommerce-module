@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Events;
 
 use Illuminate\Contracts\Queue\ShouldQueue;

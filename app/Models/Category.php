@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -12,21 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Ecommerce\Traits\TranslationTrait;
 
+#[Table('categories')]
+#[Unguarded]
+#[Appends(['parent_id', 'translated_languages'])]
 class Category extends Model
 {
     use HasUuids;
     use Sluggable;
     use TranslationTrait;
-
-    protected $table = 'categories';
-
-    public $guarded = [];
-
-    protected $casts = [
-        'image' => 'json',
-    ];
-
-    protected $appends = ['parent_id', 'translated_languages'];
 
     /**
      * Get the user's full name.
@@ -38,7 +37,8 @@ class Category extends Model
         return $this->getAttributes()['parent'] ?? null;
     }
 
-    public function scopeWithUniqueSlugConstraints(Builder $query, Model $model): Builder
+    #[Scope]
+    public function withUniqueSlugConstraints(Builder $query, Model $model): Builder
     {
         return $query->where('language', $model->language);
     }
@@ -95,5 +95,12 @@ class Category extends Model
     public function parentCategory()
     {
         return $this->hasOne('Modules\Ecommerce\Models\Category', 'id', 'parent')->with('parentCategory');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'image' => 'json',
+        ];
     }
 }

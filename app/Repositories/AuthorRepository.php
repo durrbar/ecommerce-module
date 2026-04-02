@@ -10,7 +10,7 @@ use Modules\Role\Enums\Permission;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Exceptions\RepositoryException;
 
-final class AuthorRepository extends BaseRepository
+class AuthorRepository extends BaseRepository
 {
     /**
      * @var array

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Repositories;
 
 use Illuminate\Http\Request;
@@ -59,7 +61,7 @@ class CategoryRepository extends BaseRepository
     public function updateCategory($request, $category)
     {
         $data = $request->only($this->dataArray);
-        if (! empty($request->slug) && $request->slug != $category['slug']) {
+        if (! empty($request->slug) && $request->slug !== $category['slug']) {
             $data['slug'] = $this->makeSlug($request);
         }
         $category->update($data);
