@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * Class ProductVisibilityStatus
- */
-final class ProductVisibilityStatus extends Enum
+enum ProductVisibilityStatus: string
 {
-    public const VISIBILITY_PRIVATE = 'visibility_private';
-
-    public const VISIBILITY_PUBLIC = 'visibility_public';
-
-    public const VISIBILITY_PROTECTED = 'visibility_protected';
+    case VisibilityPrivate = 'visibility_private';
+    case VisibilityPublic = 'visibility_public';
+    case VisibilityProtected = 'visibility_protected';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Repositories;
 
 use Carbon\Carbon;
@@ -26,8 +28,9 @@ use Spatie\Period\Boundaries;
 use Spatie\Period\Period;
 use Spatie\Period\Precision;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
-class ProductRepository extends BaseRepository
+final class ProductRepository extends BaseRepository
 {
     /**
      * @var array
@@ -122,7 +125,7 @@ class ProductRepository extends BaseRepository
     {
         $user = $request->user();
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
 
                 // if condition : during deal data build
                 // else condition : when he entered into vendor shop & check
@@ -152,7 +155,7 @@ class ProductRepository extends BaseRepository
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
 
                 // if condition : when he want to see shop specific products
                 // else condition : fetched all deal products of vendor's listed all shops. This can be used in vendor root page route
@@ -172,13 +175,13 @@ class ProductRepository extends BaseRepository
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
 
                 // staff can see only his assigned shop's deals product
                 $products_query = $products_query->where('in_flash_sale', '=', true);
                 break;
 
-            case $user->hasPermissionTo(Permission::CUSTOMER):
+            case $user->hasPermissionTo(Permission::Customer->value):
 
                 // customer can see all the products of a deal
                 $products_query = $products_query->where('in_flash_sale', '=', true);
@@ -202,16 +205,16 @@ class ProductRepository extends BaseRepository
             $data['slug'] = $this->makeSlug($request);
 
             if ($setting->options['isProductReview']) {
-                if ($request->status == ProductStatus::DRAFT) {
-                    $data['status'] = ProductStatus::DRAFT;
-                } elseif ($request->status == ProductStatus::UNDER_REVIEW) {
-                    $data['status'] = ProductStatus::UNDER_REVIEW;
+                if ($request->status === ProductStatus::Draft->value) {
+                    $data['status'] = ProductStatus::Draft->value;
+                } elseif ($request->status === ProductStatus::UnderReview->value) {
+                    $data['status'] = ProductStatus::UnderReview->value;
                 } else {
                     throw new HttpException(406, 'The selected status is invalid.');
                 }
             }
 
-            if ($request->product_type == ProductType::SIMPLE) {
+            if ($request->product_type === ProductType::Simple->value) {
                 $data['max_price'] = $data['price'];
                 $data['min_price'] = $data['price'];
             }
@@ -293,40 +296,40 @@ class ProductRepository extends BaseRepository
     public function checkProductForPublish($request, $product)
     {
         $status = '';
-        if ($product->shop['owner']['id'] == $request->user()->id) {
-            if ($product->status == ProductStatus::DRAFT || $product->status == ProductStatus::UNDER_REVIEW || $product->status == ProductStatus::REJECTED) {
-                if ($request->status == ProductStatus::DRAFT) {
-                    $status = ProductStatus::DRAFT;
-                } elseif ($request->status == ProductStatus::UNDER_REVIEW) {
-                    $status = ProductStatus::UNDER_REVIEW;
+        if ($product->shop['owner']['id'] === $request->user()->id) {
+            if ($product->status === ProductStatus::Draft->value || $product->status === ProductStatus::UnderReview->value || $product->status === ProductStatus::Rejected->value) {
+                if ($request->status === ProductStatus::Draft->value) {
+                    $status = ProductStatus::Draft->value;
+                } elseif ($request->status === ProductStatus::UnderReview->value) {
+                    $status = ProductStatus::UnderReview->value;
                 } else {
-                    $status = ProductStatus::DRAFT;
+                    $status = ProductStatus::Draft->value;
                 }
-            } elseif ($product->status == ProductStatus::APPROVED || $product->status == ProductStatus::PUBLISH || $product->status == ProductStatus::UNPUBLISH) {
-                if ($request->status == ProductStatus::PUBLISH) {
-                    $status = ProductStatus::PUBLISH;
-                } elseif ($request->status == ProductStatus::UNPUBLISH) {
-                    $status = ProductStatus::UNPUBLISH;
+            } elseif ($product->status === ProductStatus::Approved->value || $product->status === ProductStatus::Publish->value || $product->status === ProductStatus::Unpublish->value) {
+                if ($request->status === ProductStatus::Publish->value) {
+                    $status = ProductStatus::Publish->value;
+                } elseif ($request->status === ProductStatus::Unpublish->value) {
+                    $status = ProductStatus::Unpublish->value;
                 } else {
-                    $status = ProductStatus::UNPUBLISH;
+                    $status = ProductStatus::Unpublish->value;
                 }
             }
-        } elseif ($request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
-            if ($request->status == ProductStatus::APPROVED) {
-                $status = ProductStatus::PUBLISH;
+        } elseif ($request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {
+            if ($request->status === ProductStatus::Approved->value) {
+                $status = ProductStatus::Publish->value;
                 event(new ProductReviewApproved($product));
-            } elseif ($request->status == ProductStatus::REJECTED) {
-                $status = ProductStatus::REJECTED;
+            } elseif ($request->status === ProductStatus::Rejected->value) {
+                $status = ProductStatus::Rejected->value;
                 event(new ProductReviewRejected($product));
-            } elseif ($request->status == ProductStatus::PUBLISH) {
-                return ProductStatus::PUBLISH;
-            } elseif ($request->status == ProductStatus::UNPUBLISH) {
-                $status = ProductStatus::UNPUBLISH;
+            } elseif ($request->status === ProductStatus::Publish->value) {
+                return ProductStatus::Publish->value;
+            } elseif ($request->status === ProductStatus::Unpublish->value) {
+                $status = ProductStatus::Unpublish->value;
             } else {
-                $status = ProductStatus::REJECTED;
+                $status = ProductStatus::Rejected->value;
             }
         } else {
-            $status = ProductStatus::REJECTED;
+            $status = ProductStatus::Rejected->value;
         }
 
         return $status;
@@ -458,17 +461,17 @@ class ProductRepository extends BaseRepository
                 $data['status'] = $this->checkProductForPublish($request, $product);
             }
 
-            if ($request->product_type == ProductType::VARIABLE) {
+            if ($request->product_type === ProductType::Variable->value) {
                 $data['price'] = null;
                 $data['sale_price'] = null;
                 $data['sku'] = null;
             }
-            if ($request->product_type == ProductType::SIMPLE) {
+            if ($request->product_type === ProductType::Simple->value) {
                 $data['max_price'] = $data['price'];
                 $data['min_price'] = $data['price'];
             }
 
-            if (! empty($request->slug) && $request->slug != $product->slug) {
+            if (! empty($request->slug) && $request->slug !== $product->slug) {
                 $stringifySlug = $this->makeSlug($request);
                 $data['slug'] = $this->makeSlug($request);
 
@@ -480,7 +483,7 @@ class ProductRepository extends BaseRepository
             }
 
             $product->update($data);
-            if ($product->product_type === ProductType::SIMPLE) {
+            if ($product->product_type === ProductType::Simple->value) {
                 $product->variations()->delete();
                 $product->variation_options()->delete();
             }
@@ -498,7 +501,7 @@ class ProductRepository extends BaseRepository
             }
 
             if ($setting->options['enableEmailForDigitalProduct']) {
-                if ($request->product_type == 'variable') {
+                if ($request->product_type === 'variable') {
                     foreach ($request['variation_options']['upsert'] as $variation_data) {
                         if ($variation_data['inform_purchased_customer']) {
                             event(new DigitalProductUpdateEvent($product, $request->user(), [
@@ -602,7 +605,7 @@ class ProductRepository extends BaseRepository
         $quantity = 0;
         try {
             $product = Product::findOrFail($productId);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
 
@@ -632,7 +635,7 @@ class ProductRepository extends BaseRepository
         $quantity = 0;
         try {
             $variation = Variation::findOrFail($variationId);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
 
@@ -693,7 +696,7 @@ class ProductRepository extends BaseRepository
     {
         try {
             $product = Product::findOrFail($product_id);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
 
@@ -704,7 +707,7 @@ class ProductRepository extends BaseRepository
     {
         try {
             $variation = Variation::findOrFail($variation_id);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
 
@@ -715,7 +718,7 @@ class ProductRepository extends BaseRepository
     {
         try {
             $location = Resource::findOrFail($location_id);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
 
@@ -728,7 +731,7 @@ class ProductRepository extends BaseRepository
         foreach ($resources as $resource_id) {
             try {
                 $resource = Resource::findOrFail($resource_id);
-            } catch (\Throwable $th) {
+            } catch (Throwable $th) {
                 throw $th;
             }
             if ($resource->price) {

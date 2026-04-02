@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Repositories;
 
 use Modules\Core\Repositories\BaseRepository;
@@ -8,7 +10,7 @@ use Modules\Role\Enums\Permission;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Exceptions\RepositoryException;
 
-class ManufacturerRepository extends BaseRepository
+final class ManufacturerRepository extends BaseRepository
 {
     /**
      * @var array
@@ -55,7 +57,7 @@ class ManufacturerRepository extends BaseRepository
     {
         $data = $request->only($this->dataArray);
         $data['slug'] = $this->makeSlug($request);
-        if ($request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
+        if ($request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {
             $data['is_approved'] = true;
         } else {
             $data['is_approved'] = false;
@@ -67,7 +69,7 @@ class ManufacturerRepository extends BaseRepository
     public function updateManufacturer($request, $Manufacturer)
     {
         $data = $request->only($this->dataArray);
-        if (! empty($request->slug) && $request->slug != $Manufacturer['slug']) {
+        if (! empty($request->slug) && $request->slug !== $Manufacturer['slug']) {
             $data['slug'] = $this->makeSlug($request);
         }
         $Manufacturer->update($data);

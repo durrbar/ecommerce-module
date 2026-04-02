@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Carbon\Carbon;
@@ -11,7 +13,7 @@ use Modules\Role\Enums\Permission;
 use Modules\Settings\Models\Settings;
 use Modules\User\Models\User;
 
-class MaintenanceNotification
+final class MaintenanceNotification
 {
     /**
      * Create the event listener.
@@ -38,8 +40,8 @@ class MaintenanceNotification
             return;
         }
 
-        $admins = User::permission(Permission::SUPER_ADMIN)->pluck('id')->toArray();
-        $users = User::permission(Permission::STORE_OWNER)->whereNotIN('id', $admins)->get();
+        $admins = User::permission(Permission::SuperAdmin->value)->pluck('id')->toArray();
+        $users = User::permission(Permission::StoreOwner->value)->whereNotIN('id', $admins)->get();
         if ($users) {
             foreach ($users as $user) {
                 Notification::route('mail', [

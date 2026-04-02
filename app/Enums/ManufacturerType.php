@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * Class RoleType
- */
-final class ManufacturerType extends Enum
+enum ManufacturerType: string
 {
-    public const PRINT_MEDIA = 'print_media';
-
-    public const OTHERS = 'others';
+    case PrintMedia = 'print_media';
+    case Others = 'others';
 }

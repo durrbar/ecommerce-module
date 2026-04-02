@@ -69,8 +69,8 @@ return new class() extends Migration
             $table->boolean('in_stock')->default(true);
             $table->boolean('is_taxable')->default(false);
             // $table->uuid('shipping_class_id')->nullable();
-            $table->enum('status', ProductStatus::getValues())->default(ProductStatus::DRAFT);
-            $table->enum('product_type', ProductType::getValues())->default(ProductType::SIMPLE);
+            $table->enum('status', ProductStatus::cases())->default(ProductStatus::Draft->value);
+            $table->enum('product_type', ProductType::cases())->default(ProductType::Simple->value);
             $table->string('unit');
             $table->string('height')->nullable();
             $table->string('width')->nullable();

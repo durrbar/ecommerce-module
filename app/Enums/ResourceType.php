@@ -1,21 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * Class RoleType
- */
-final class ResourceType extends Enum
+enum ResourceType: string
 {
-    public const DROPOFF_LOCATION = 'DROPOFF_LOCATION';
-
-    public const PICKUP_LOCATION = 'PICKUP_LOCATION';
-
-    public const PERSON = 'PERSON';
-
-    public const DEPOSIT = 'DEPOSIT';
-
-    public const FEATURES = 'FEATURES';
+    case DropoffLocation = 'DROPOFF_LOCATION';
+    case PickupLocation = 'PICKUP_LOCATION';
+    case Person = 'PERSON';
+    case Deposit = 'DEPOSIT';
+    case Features = 'FEATURES';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use Carbon\Carbon;
@@ -29,7 +31,7 @@ use Modules\Role\Enums\Permission;
 use Modules\Settings\Repositories\SettingsRepository;
 use Modules\Tag\Models\Tag;
 
-class ProductController extends CoreController
+final class ProductController extends CoreController
 {
     public $repository;
 
@@ -106,9 +108,8 @@ class ProductController extends CoreController
             $setting = $this->settings->first();
             if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
                 return $this->repository->storeProduct($request, $setting);
-            } else {
-                throw new AuthorizationException(NOT_AUTHORIZED);
             }
+            throw new AuthorizationException(NOT_AUTHORIZED);
         } catch (DurrbarException $e) {
             throw new DurrbarException(SOMETHING_WENT_WRONG, $e->getMessage());
         }
@@ -204,9 +205,8 @@ class ProductController extends CoreController
             $id = $request->id;
 
             return $this->repository->updateProduct($request, $id, $setting);
-        } else {
-            throw new AuthorizationException(NOT_AUTHORIZED);
         }
+        throw new AuthorizationException(NOT_AUTHORIZED);
     }
 
     /**
@@ -677,24 +677,26 @@ class ProductController extends CoreController
         $products_query = $this->repository->with(['type', 'shop'])->where('language', $language);
 
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
                 return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
                 if (isset($request->shop_id)) {
                     return $products_query->where('shop_id', '=', $request->shop_id);
-                } else {
-                    return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
                 }
+
+                return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
+
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
                 if (isset($request->shop_id)) {
                     return $products_query->where('shop_id', '=', $request->shop_id);
-                } else {
-                    return $products_query->where('shop_id', $user->managed_shop()->value('id'));
                 }
+
+                return $products_query->where('shop_id', $user->managed_shop()->value('id'));
+
                 break;
         }
 
@@ -726,30 +728,33 @@ class ProductController extends CoreController
         $products_query = $this->repository->with(['type', 'shop'])->where('language', $language)->where('quantity', '<', 10);
 
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
                 if (isset($request->shop_id)) {
                     return $products_query->where('shop_id', '=', $request->shop_id);
-                } else {
-                    return $products_query;
                 }
+
+                return $products_query;
+
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
                 if (isset($request->shop_id)) {
                     // shop specific
                     return $products_query->where('shop_id', '=', $request->shop_id);
-                } else {
-                    // overall shops
-                    return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
                 }
+
+                // overall shops
+                return $products_query->whereIn('shop_id', $user->shops()->pluck('id'));
+
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
                 if (isset($request->shop_id)) {
                     return $products_query->where('shop_id', '=', $request->shop_id);
-                } else {
-                    return $products_query->where('shop_id', '=', null);
                 }
+
+                return $products_query->where('shop_id', '=', null);
+
                 break;
 
             default:

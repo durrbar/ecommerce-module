@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,7 +11,7 @@ use Modules\Notification\Enums\EventType;
 use Modules\Notification\Traits\SmsTrait;
 use Modules\User\Models\User;
 
-class SendQuestionAnsweredNotification implements ShouldQueue
+final class SendQuestionAnsweredNotification implements ShouldQueue
 {
     use SmsTrait;
 
@@ -20,7 +22,7 @@ class SendQuestionAnsweredNotification implements ShouldQueue
      */
     public function handle(QuestionAnswered $event)
     {
-        $emailReceiver = $this->getWhichUserWillGetEmail(EventType::QUESTION_ANSWERED, $event->question->language ?? DEFAULT_LANGUAGE);
+        $emailReceiver = $this->getWhichUserWillGetEmail(EventType::QuestionAnswered->value, $event->question->language ?? DEFAULT_LANGUAGE);
         if ($emailReceiver['customer'] && $event->question->customer) {
             $customer = User::findOrFail($event->question->user_id);
             $customer->notify(new NotifyQuestionAnswered($event->question));

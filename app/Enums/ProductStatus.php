@@ -1,23 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * Class ProductStatus
- */
-final class ProductStatus extends Enum
+enum ProductStatus: string
 {
-    public const UNDER_REVIEW = 'under_review';
-
-    public const APPROVED = 'approved';
-
-    public const REJECTED = 'rejected';
-
-    public const PUBLISH = 'publish';
-
-    public const UNPUBLISH = 'unpublish';
-
-    public const DRAFT = 'draft';
+    case UnderReview = 'under_review';
+    case Approved = 'approved';
+    case Rejected = 'rejected';
+    case Publish = 'publish';
+    case Unpublish = 'unpublish';
+    case Draft = 'draft';
 }

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +19,7 @@ use Modules\Ecommerce\Repositories\TermsAndConditionsRepository;
 use Modules\Role\Enums\Permission;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class TermsAndConditionsController extends CoreController
+final class TermsAndConditionsController extends CoreController
 {
     public $repository;
 
@@ -52,20 +55,21 @@ class TermsAndConditionsController extends CoreController
 
             if (isset($user)) {
                 switch ($user) {
-                    case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+                    case $user->hasPermissionTo(Permission::SuperAdmin->value):
                         return $this->repository->with('shop')->where('language', $language);
                         break;
 
-                    case $user->hasPermissionTo(Permission::STORE_OWNER):
+                    case $user->hasPermissionTo(Permission::StoreOwner->value):
                         $shopIds = $user->shops()->pluck('id');
                         if ($this->repository->hasPermission($user, $request->shop_id)) {
                             return $this->repository->with('shop')->where('shop_id', '=', $request->shop_id)->where('language', $language);
-                        } else {
-                            return $this->repository->with('shop')->where('user_id', '=', $user->id)->where('language', $language)->whereIn('shop_id', $shopIds);
                         }
+
+                        return $this->repository->with('shop')->where('user_id', '=', $user->id)->where('language', $language)->whereIn('shop_id', $shopIds);
+
                         break;
 
-                    case $user->hasPermissionTo(Permission::STAFF):
+                    case $user->hasPermissionTo(Permission::Staff->value):
                         if ($this->repository->hasPermission($user, $request->shop_id)) {
                             return $this->repository->with('shop')->where('shop_id', '=', $request->shop_id)->where('language', $language);
                         }
@@ -78,9 +82,10 @@ class TermsAndConditionsController extends CoreController
             } else {
                 if ($request->shop_id) {
                     return $this->repository->with('shop')->where('shop_id', '=', $request->shop_id)->where('is_approved', '=', true)->where('language', $language);
-                } else {
-                    return $this->repository->with('shop')->where('is_approved', '=', true)->where('language', $language);
                 }
+
+                return $this->repository->with('shop')->where('is_approved', '=', true)->where('language', $language);
+
             }
         } catch (DurrbarException $e) {
             throw new DurrbarException(SOMETHING_WENT_WRONG, $e->getMessage());
@@ -168,7 +173,7 @@ class TermsAndConditionsController extends CoreController
     {
         try {
             $user = $request->user();
-            if ($user && ($user->hasPermissionTo(Permission::SUPER_ADMIN) || $user->hasPermissionTo(Permission::STORE_OWNER) || $user->hasPermissionTo(Permission::STAFF))) {
+            if ($user && ($user->hasPermissionTo(Permission::SuperAdmin->value) || $user->hasPermissionTo(Permission::StoreOwner->value) || $user->hasPermissionTo(Permission::Staff->value))) {
                 return $this->repository->findOrFail($request->id)->delete();
             }
         } catch (DurrbarException $e) {
@@ -184,13 +189,13 @@ class TermsAndConditionsController extends CoreController
     public function approveTerm(Request $request)
     {
         try {
-            if (! $request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if (! $request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {
                 throw new DurrbarException(NOT_AUTHORIZED);
             }
             $id = $request->id;
             try {
                 $term = $this->repository->findOrFail($id);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new ModelNotFoundException(NOT_FOUND);
             }
             $term->is_approved = true;
@@ -210,13 +215,13 @@ class TermsAndConditionsController extends CoreController
     public function disApproveTerm(Request $request)
     {
         try {
-            if (! $request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if (! $request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {
                 throw new DurrbarException(NOT_AUTHORIZED);
             }
             $id = $request->id;
             try {
                 $term = $this->repository->findOrFail($id);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new ModelNotFoundException(NOT_FOUND);
             }
 

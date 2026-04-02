@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use Carbon\Carbon;
@@ -16,7 +18,7 @@ use Modules\Role\Enums\Permission;
 use Modules\User\Models\User;
 use Modules\Vendor\Models\Shop;
 
-class AnalyticsController extends CoreController
+final class AnalyticsController extends CoreController
 {
     public $addressRepository;
 
@@ -29,7 +31,7 @@ class AnalyticsController extends CoreController
     {
         try {
             $user = $request->user();
-            // if (!$user || !$user->hasPermissionTo(Permission::STORE_OWNER)) {
+            // if (!$user || !$user->hasPermissionTo(Permission::StoreOwner->value)) {
             //     throw new AuthenticationException();
             // }
             $shops = $user ? $user->shops()->pluck('id') : collect();
@@ -37,11 +39,11 @@ class AnalyticsController extends CoreController
             // Total revenue
             $totalRevenueQuery = DB::table('orders as childOrder')
                 ->whereDate('childOrder.created_at', '<=', Carbon::now())
-                ->where('childOrder.order_status', OrderStatus::COMPLETED)
+                ->where('childOrder.order_status', OrderStatus::Completed->value)
                 ->whereNotNull('childOrder.parent_id')
                 ->join('orders as parentOrder', 'childOrder.parent_id', '=', 'parentOrder.id')
                 ->whereDate('parentOrder.created_at', '<=', Carbon::now())
-                ->where('parentOrder.order_status', OrderStatus::COMPLETED)
+                ->where('parentOrder.order_status', OrderStatus::Completed->value)
                 ->select(
                     'childOrder.id',
                     'childOrder.parent_id',
@@ -53,7 +55,7 @@ class AnalyticsController extends CoreController
                 );
 
             // Revenue section : Total
-            if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
                 $totalRevenueQuery = $totalRevenueQuery->get();
                 $totalRevenue = $totalRevenueQuery->sum('paid_total')
                     + $totalRevenueQuery->unique('parent_id')->sum('delivery_fee')
@@ -68,10 +70,10 @@ class AnalyticsController extends CoreController
             // Today's revenue
             $todaysRevenueQuery = DB::table('orders as A')
                 ->whereDate('A.created_at', '>', Carbon::now()->subDays(1))
-                ->where('A.order_status', OrderStatus::COMPLETED)
+                ->where('A.order_status', OrderStatus::Completed->value)
                 ->where('A.parent_id', '!=', null)
                 ->join('orders as B', 'A.parent_id', '=', 'B.id')
-                ->where('B.order_status', OrderStatus::COMPLETED)
+                ->where('B.order_status', OrderStatus::Completed->value)
                 ->select(
                     'A.id',
                     'A.parent_id',
@@ -82,7 +84,7 @@ class AnalyticsController extends CoreController
                     'A.shop_id'
                 );
 
-            if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
                 $todaysRevenueQuery = $todaysRevenueQuery->get();
                 $todaysRevenue = $todaysRevenueQuery->sum('paid_total') +
                     $todaysRevenueQuery->unique('parent_id')->sum('delivery_fee') +
@@ -93,7 +95,7 @@ class AnalyticsController extends CoreController
 
             // total refunds
             $totalRefundQuery = DB::table('refunds')->whereDate('created_at', '<', Carbon::now());
-            if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
                 $totalRefunds = $totalRefundQuery->where('shop_id', null)->sum('amount');
             } else {
                 $totalRefunds = $totalRefundQuery->whereIn('shop_id', $shops)->sum('amount');
@@ -101,23 +103,23 @@ class AnalyticsController extends CoreController
 
             // total orders
             $totalOrdersQuery = DB::table('orders')->whereDate('created_at', '<=', Carbon::now());
-            if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
                 $totalOrders = $totalOrdersQuery->where('parent_id', null)->count();
             } else {
                 $totalOrders = $totalOrdersQuery->whereIn('shop_id', $shops)->count();
             }
 
             // total shops
-            if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
                 $totalVendors = User::whereHas('permissions', function ($query): void {
-                    $query->where('name', Permission::STORE_OWNER);
+                    $query->where('name', Permission::StoreOwner->value);
                 })->count();
                 $totalShops = Shop::count();
             } else {
                 $totalShops = Shop::where('owner_id', '=', $user->id)->count();
             }
 
-            $newCustomers = User::permission(Permission::CUSTOMER)->whereDate('created_at', '>', Carbon::now()->subDays(30))->count();
+            $newCustomers = User::permission(Permission::Customer->value)->whereDate('created_at', '>', Carbon::now()->subDays(30))->count();
 
             $totalYearSaleByMonth = $this->getTotalYearSaleByMonth($user);
             $todayTotalOrderByStatus = $this->orderCountingByStatus($request, 1);
@@ -152,13 +154,13 @@ class AnalyticsController extends CoreController
         ];
 
         $query = DB::table('orders as A')
-            ->where('A.order_status', OrderStatus::COMPLETED)
+            ->where('A.order_status', OrderStatus::Completed->value)
             ->whereYear('A.created_at', Carbon::now()->year);
 
-        if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+        if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
             $query->whereNull('A.parent_id')
                 ->join('orders as B', 'A.id', '=', 'B.parent_id')
-                ->where('B.order_status', OrderStatus::COMPLETED)
+                ->where('B.order_status', OrderStatus::Completed->value)
                 ->select(
                     DB::raw('SUM(A.paid_total) as total'),
                     DB::raw("DATE_FORMAT(A.created_at, '%M') as month")
@@ -190,7 +192,7 @@ class AnalyticsController extends CoreController
         $user = $request->user();
 
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
                 $query = DB::table('orders as A')
                     ->where('A.parent_id', '=', null)
                     ->whereDate('A.created_at', '>', Carbon::now()->subDays($days))
@@ -202,7 +204,7 @@ class AnalyticsController extends CoreController
                     ->pluck('order_count', 'order_status');
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
                 $shops = $user ? $user->shops()->pluck('id') : collect();
                 $query = DB::table('orders as A')
                     ->where('A.parent_id', '!=', null)
@@ -216,7 +218,7 @@ class AnalyticsController extends CoreController
                     ->pluck('order_count', 'order_status');
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
                 $shop = $user?->shop_id ?? [];
                 $query = DB::table('orders as A')
                     ->where('A.parent_id', '!=', null)
@@ -231,7 +233,7 @@ class AnalyticsController extends CoreController
                 break;
         }
 
-        // if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN)) {
+        // if ($user && $user->hasPermissionTo(Permission::SuperAdmin->value)) {
         //     // for super-admin
         //     $query =  DB::table('orders as A')
         //         ->where('A.parent_id', '=', null)
@@ -258,14 +260,14 @@ class AnalyticsController extends CoreController
         // }
 
         return [
-            'pending' => $query[OrderStatus::PENDING] ?? 0,
-            'processing' => $query[OrderStatus::PROCESSING] ?? 0,
-            'complete' => $query[OrderStatus::COMPLETED] ?? 0,
-            'cancelled' => $query[OrderStatus::CANCELLED] ?? 0,
-            'refunded' => $query[OrderStatus::REFUNDED] ?? 0,
-            'failed' => $query[OrderStatus::FAILED] ?? 0,
-            'localFacility' => $query[OrderStatus::AT_LOCAL_FACILITY] ?? 0,
-            'outForDelivery' => $query[OrderStatus::OUT_FOR_DELIVERY] ?? 0,
+            'pending' => $query[OrderStatus::Pending->value] ?? 0,
+            'processing' => $query[OrderStatus::Processing->value] ?? 0,
+            'complete' => $query[OrderStatus::Completed->value] ?? 0,
+            'cancelled' => $query[OrderStatus::Cancelled->value] ?? 0,
+            'refunded' => $query[OrderStatus::Refunded->value] ?? 0,
+            'failed' => $query[OrderStatus::Failed->value] ?? 0,
+            'localFacility' => $query[OrderStatus::AtLocalFacility->value] ?? 0,
+            'outForDelivery' => $query[OrderStatus::OutForDelivery->value] ?? 0,
         ];
     }
 
@@ -328,7 +330,7 @@ class AnalyticsController extends CoreController
         $mostProductCategory = [];
 
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
 
                 $mostProductCategory = DB::table('category_product')
                     ->select(
@@ -348,7 +350,7 @@ class AnalyticsController extends CoreController
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
 
                 $shops = $user->shops()->pluck('id') ?? [];
                 $mostProductCategory = DB::table('category_product')
@@ -370,7 +372,7 @@ class AnalyticsController extends CoreController
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
 
                 $shop = $user->shop_id ?? null;
                 if (isset($shop)) {
@@ -413,7 +415,7 @@ class AnalyticsController extends CoreController
         $mostSoldProductCategory = [];
 
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
 
                 $mostSoldProductCategory = DB::table('categories')
                     ->select(
@@ -437,7 +439,7 @@ class AnalyticsController extends CoreController
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
 
                 $shops = $user->shops()->pluck('id') ?? [];
                 $mostSoldProductCategory = DB::table('categories')
@@ -463,7 +465,7 @@ class AnalyticsController extends CoreController
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
 
                 $shop = $user->shop_id ?? null;
                 if (isset($shop)) {
@@ -510,7 +512,7 @@ class AnalyticsController extends CoreController
         $topRatedProducts = [];
 
         switch ($user) {
-            case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+            case $user->hasPermissionTo(Permission::SuperAdmin->value):
                 $topRatedProducts = DB::table('reviews')
                     ->join('products', 'products.id', '=', 'reviews.product_id')
                     ->join('types', 'types.id', '=', 'products.type_id')
@@ -551,7 +553,7 @@ class AnalyticsController extends CoreController
                     ->get();
                 break;
 
-            case $user->hasPermissionTo(Permission::STORE_OWNER):
+            case $user->hasPermissionTo(Permission::StoreOwner->value):
 
                 $shops = $user->shops()->pluck('id') ?? [];
                 $topRatedProducts = DB::table('reviews')
@@ -596,7 +598,7 @@ class AnalyticsController extends CoreController
 
                 break;
 
-            case $user->hasPermissionTo(Permission::STAFF):
+            case $user->hasPermissionTo(Permission::Staff->value):
 
                 $shop = $user->shop_id ?? [];
                 if (isset($shop)) {

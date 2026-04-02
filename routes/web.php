@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use Modules\Ecommerce\Http\Controllers\AbusiveReportController;
 use Modules\Ecommerce\Http\Controllers\AnalyticsController;
@@ -89,7 +91,7 @@ Route::apiResource('terms-and-conditions', TermsAndConditionsController::class, 
  * Authorized Route for Customers only
  * ******************************************
  */
-Route::group(['middleware' => ['can:'.Permission::CUSTOMER, 'auth:sanctum', 'email.verified']], function (): void {
+Route::group(['middleware' => ['can:'.Permission::Customer->value, 'auth:sanctum', 'email.verified']], function (): void {
     Route::apiResource('questions', QuestionController::class, [
         'only' => ['store'],
     ]);
@@ -123,7 +125,7 @@ Route::group(['middleware' => ['can:'.Permission::CUSTOMER, 'auth:sanctum', 'ema
  * ******************************************
  */
 Route::group(
-    ['middleware' => ['permission:'.Permission::STAFF.'|'.Permission::STORE_OWNER, 'auth:sanctum', 'email.verified']],
+    ['middleware' => ['permission:'.Permission::Staff->value.'|'.Permission::StoreOwner->value, 'auth:sanctum', 'email.verified']],
     function (): void {
         Route::apiResource('products', ProductController::class, [
             'only' => ['store', 'update', 'destroy'],
@@ -166,7 +168,7 @@ Route::group(
  * *****************************************
  */
 Route::group(
-    ['middleware' => ['permission:'.Permission::STORE_OWNER, 'auth:sanctum', 'email.verified']],
+    ['middleware' => ['permission:'.Permission::StoreOwner->value, 'auth:sanctum', 'email.verified']],
     function (): void {
         // Route::get('analytics', [AnalyticsController::class, 'analytics']);
         // Route::apiResource('notify-logs', NotifyLogsController::class, [
@@ -195,7 +197,7 @@ Route::group(
  * Authorized Route for Super Admin only
  * *****************************************
  */
-Route::group(['middleware' => ['permission:'.Permission::SUPER_ADMIN, 'auth:sanctum']], function (): void {
+Route::group(['middleware' => ['permission:'.Permission::SuperAdmin->value, 'auth:sanctum']], function (): void {
     // Route::get('messages/get-conversations/{shop_id}', [ConversationController::class, 'getConversationByShopId']);
     // Route::get('analytics', [AnalyticsController::class, 'analytics']);
     Route::apiResource('types', TypeController::class, [

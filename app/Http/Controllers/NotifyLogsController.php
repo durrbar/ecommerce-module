@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use Exception;
@@ -13,7 +15,7 @@ use Modules\Role\Enums\Permission;
 use Modules\User\Repositories\UserRepository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class NotifyLogsController extends CoreController
+final class NotifyLogsController extends CoreController
 {
     public $repository;
 
@@ -111,7 +113,7 @@ class NotifyLogsController extends CoreController
     public function deleteNotifyLogs(Request $request)
     {
         try {
-            if ($request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
+            if ($request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {
                 return $this->repository->findOrFail($request->id)->delete();
             }
         } catch (DurrbarException $th) {

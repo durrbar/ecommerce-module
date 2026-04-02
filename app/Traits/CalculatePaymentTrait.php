@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Traits;
 
 use Modules\Core\Exceptions\DurrbarException;
 use Modules\Coupon\Enums\CouponType;
 use Modules\Ecommerce\Models\Product;
 use Modules\Ecommerce\Models\Variation;
+use Throwable;
 
 trait CalculatePaymentTrait
 {
@@ -29,7 +32,7 @@ trait CalculatePaymentTrait
             }
 
             return $subtotal;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new DurrbarException(NOT_FOUND);
         }
     }
@@ -37,9 +40,10 @@ trait CalculatePaymentTrait
     public function calculateDiscount($coupon, $subtotal)
     {
         if ($coupon->id) {
-            if ($coupon->type === CouponType::PERCENTAGE_COUPON) {
+            if ($coupon->type === CouponType::PercentageCoupon->value) {
                 return $subtotal * ($coupon->amount / 100);
-            } elseif ($coupon->type === CouponType::FIXED_COUPON) {
+            }
+            if ($coupon->type === CouponType::FixedCoupon->value) {
                 return $coupon->amount;
             }
         } else {

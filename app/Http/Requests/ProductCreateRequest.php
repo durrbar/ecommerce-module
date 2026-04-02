@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Ecommerce\Enums\ProductStatus;
 use Modules\Ecommerce\Enums\ProductType;
 
-class ProductCreateRequest extends FormRequest
+final class ProductCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,20 +30,6 @@ class ProductCreateRequest extends FormRequest
      */
     public function rules()
     {
-        $productStatus = [
-            ProductStatus::UNDER_REVIEW,
-            ProductStatus::APPROVED,
-            ProductStatus::REJECTED,
-            ProductStatus::PUBLISH,
-            ProductStatus::UNPUBLISH,
-            ProductStatus::DRAFT,
-        ];
-
-        $productType = [
-            ProductType::SIMPLE,
-            ProductType::VARIABLE,
-        ];
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string'],
@@ -51,7 +39,7 @@ class ProductCreateRequest extends FormRequest
             'shop_id' => ['required', 'exists:Modules\Ecommerce\Models\Shop,id'],
             'manufacturer_id' => ['nullable', 'exists:Modules\Ecommerce\Models\Manufacturer,id'],
             'author_id' => ['nullable', 'exists:Modules\Ecommerce\Models\Author,id'],
-            'product_type' => ['required', Rule::in($productType)],
+            'product_type' => ['required', new Enum(ProductType::class)],
             'categories' => ['array'],
             'tags' => ['array'],
             'language' => ['nullable', 'string'],
@@ -67,7 +55,7 @@ class ProductCreateRequest extends FormRequest
             'image' => ['array'],
             'gallery' => ['array'],
             'video' => ['array'],
-            'status' => ['string', Rule::in($productStatus)],
+            'status' => ['string', new Enum(ProductStatus::class)],
             'height' => ['nullable', 'string'],
             'length' => ['nullable', 'string'],
             'width' => ['nullable', 'string'],

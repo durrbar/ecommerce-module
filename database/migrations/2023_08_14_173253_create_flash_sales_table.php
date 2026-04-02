@@ -22,7 +22,7 @@ return new class() extends Migration
             $table->dateTime('start_date')->default(now());
             $table->dateTime('end_date');
             $table->boolean('sale_status')->default(false);
-            $table->enum('type', FlashSaleType::getValues())->default(FlashSaleType::PERCENTAGE);
+            $table->enum('type', FlashSaleType::cases())->default(FlashSaleType::Percentage->value);
             $table->integer('rate')->nullable();
             $table->json('sale_builder')->nullable();
             $table->json('image')->nullable();

@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * Class RoleType
- */
-final class ProductType extends Enum
+enum ProductType: string
 {
-    public const SIMPLE = 'simple';
-
-    public const VARIABLE = 'variable';
+    case Simple = 'simple';
+    case Variable = 'variable';
 }

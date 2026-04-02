@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Ecommerce\Enums\ResourceType;
 
-class ResourceCreateRequest extends FormRequest
+final class ResourceCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +32,7 @@ class ResourceCreateRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'slug' => ['nullable', 'string'],
-            'type' => ['required', Rule::in(ResourceType::getValues())],
+            'type' => ['required', new Enum(ResourceType::class)],
             'price' => ['nullable', 'numeric'],
             'image' => ['nullable', 'array'],
             'icon' => ['nullable', 'string'],

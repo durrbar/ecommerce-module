@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -13,7 +16,7 @@ use Modules\Ecommerce\Http\Resources\AuthorResource;
 use Modules\Ecommerce\Repositories\AuthorRepository;
 use Modules\Role\Enums\Permission;
 
-class AuthorController extends CoreController
+final class AuthorController extends CoreController
 {
     public $repository;
 
@@ -87,7 +90,7 @@ class AuthorController extends CoreController
         $language = $request->language ?? DEFAULT_LANGUAGE;
         try {
             $author = $this->repository->where('slug', $slug)->where('language', $language)->firstOrFail();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new ModelNotFoundException(NOT_FOUND);
         }
 
@@ -116,7 +119,7 @@ class AuthorController extends CoreController
         if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
             try {
                 $author = $this->repository->findOrFail($request->id);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new ModelNotFoundException(NOT_FOUND);
             }
 
@@ -143,7 +146,7 @@ class AuthorController extends CoreController
 
     public function deleteAuthor(Request $request)
     {
-        if ($request->user()->hasPermissionTo(Permission::SUPER_ADMIN)) {
+        if ($request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {
             $author = $this->repository->findOrFail($request->id);
             $author->delete();
 

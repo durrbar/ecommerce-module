@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ecommerce\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
@@ -16,7 +18,7 @@ use Modules\Ecommerce\Repositories\FaqsRepository;
 use Modules\Role\Enums\Permission;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class FaqsController extends CoreController
+final class FaqsController extends CoreController
 {
     public $repository;
 
@@ -53,30 +55,31 @@ class FaqsController extends CoreController
 
             if ($user) {
                 switch ($user) {
-                    case $user->hasPermissionTo(Permission::SUPER_ADMIN):
+                    case $user->hasPermissionTo(Permission::SuperAdmin->value):
                         return $this->repository
                             ->with('shop')
                             ->whereNotNull('id')
                             ->where('language', $language);
                         break;
 
-                    case $user->hasPermissionTo(Permission::STORE_OWNER):
+                    case $user->hasPermissionTo(Permission::StoreOwner->value):
                         $shopIds = $user->shops()->pluck('id');
                         if ($this->repository->hasPermission($user, $request->shop_id)) {
                             return $this->repository
                                 ->with('shop')
                                 ->where('shop_id', '=', $request->shop_id)
                                 ->where('language', $language);
-                        } else {
-                            return $this->repository
-                                ->with('shop')
-                                ->where('user_id', '=', $user->id)
-                                ->where('language', $language)
-                                ->whereIn('shop_id', $shopIds);
                         }
+
+                        return $this->repository
+                            ->with('shop')
+                            ->where('user_id', '=', $user->id)
+                            ->where('language', $language)
+                            ->whereIn('shop_id', $shopIds);
+
                         break;
 
-                    case $user->hasPermissionTo(Permission::STAFF):
+                    case $user->hasPermissionTo(Permission::Staff->value):
                         // if ($this->repository->hasPermission($user, $request->shop_id)) {
                         return $this->repository
                             ->with('shop')
@@ -102,12 +105,13 @@ class FaqsController extends CoreController
                         ->where('shop_id', '=', $request->shop_id)
                         ->where('language', $language)
                         ->whereNotNull('id');
-                } else {
-                    return $this->repository
-                        ->with('shop')
-                        ->where('language', $language)
-                        ->whereNotNull('id');
                 }
+
+                return $this->repository
+                    ->with('shop')
+                    ->where('language', $language)
+                    ->whereNotNull('id');
+
             }
         } catch (DurrbarException $e) {
             throw new DurrbarException(SOMETHING_WENT_WRONG, $e->getMessage());
@@ -194,7 +198,7 @@ class FaqsController extends CoreController
         try {
             $id = $request->id;
             $user = $request->user();
-            if ($user && ($user->hasPermissionTo(Permission::SUPER_ADMIN) || $user->hasPermissionTo(Permission::STORE_OWNER) || $user->hasPermissionTo(Permission::STAFF))) {
+            if ($user && ($user->hasPermissionTo(Permission::SuperAdmin->value) || $user->hasPermissionTo(Permission::StoreOwner->value) || $user->hasPermissionTo(Permission::Staff->value))) {
                 return $this->repository->findOrFail($id)->delete();
             }
             throw new AuthorizationException(NOT_AUTHORIZED);

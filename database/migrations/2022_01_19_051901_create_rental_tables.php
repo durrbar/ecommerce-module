@@ -48,7 +48,7 @@ return new class() extends Migration
             $table->json('image')->nullable();
             $table->boolean('is_approved')->default(false);
             $table->double('price')->nullable();
-            $table->enum('type', ResourceType::getValues());
+            $table->enum('type', ResourceType::cases());
             $table->timestamps();
         });
 
