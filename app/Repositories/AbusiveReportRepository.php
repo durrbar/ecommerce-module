@@ -27,7 +27,7 @@ class AbusiveReportRepository extends BaseRepository
         'message',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -39,7 +39,7 @@ class AbusiveReportRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return AbusiveReport::class;
     }

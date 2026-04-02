@@ -36,7 +36,7 @@ class TermsAndConditionsRepository extends BaseRepository
         'slug',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -48,7 +48,7 @@ class TermsAndConditionsRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return TermsAndConditions::class;
     }

@@ -39,7 +39,7 @@ class QuestionRepository extends BaseRepository
         'answer',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -51,7 +51,7 @@ class QuestionRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return Question::class;
     }

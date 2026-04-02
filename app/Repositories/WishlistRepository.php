@@ -26,7 +26,7 @@ class WishlistRepository extends BaseRepository
         'variation_option_id',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -38,7 +38,7 @@ class WishlistRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return Wishlist::class;
     }
