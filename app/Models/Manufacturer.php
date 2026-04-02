@@ -43,7 +43,7 @@ class Manufacturer extends Model
         return $query->where('language', $model->language);
     }
 
-    public function getProductsCountAttribute()
+    public function getProductsCountAttribute(): int
     {
         if (array_key_exists('products_count', $this->getAttributes())) {
             return (int) $this->getAttributes()['products_count'];
