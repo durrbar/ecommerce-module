@@ -65,34 +65,22 @@ class Category extends Model
         return $this->belongsToMany(Product::class, 'category_product');
     }
 
-    /**
-     * @return HasMany
-     */
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany('Modules\Ecommerce\Models\Category', 'parent', 'id')->with('children')->withCount('products');
     }
 
-    /**
-     * @return HasMany
-     */
-    public function subCategories()
+    public function subCategories(): HasMany
     {
         return $this->hasMany('Modules\Ecommerce\Models\Category', 'parent', 'id')->with('subCategories', 'parent')->withCount('products');
     }
 
-    /**
-     * @return HasOne
-     */
-    public function parent()
+    public function parent(): HasOne
     {
         return $this->hasOne('Modules\Ecommerce\Models\Category', 'id', 'parent')->with('parent');
     }
 
-    /**
-     * @return HasOne
-     */
-    public function parentCategory()
+    public function parentCategory(): HasOne
     {
         return $this->hasOne('Modules\Ecommerce\Models\Category', 'id', 'parent')->with('parentCategory');
     }
