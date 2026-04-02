@@ -13,7 +13,7 @@ trait WalletsTrait
     /**
      * Converts wallet points to currency
      */
-    public function walletPointsToCurrency($points)
+    public function walletPointsToCurrency(int|float $points): float
     {
         $currencyToWalletRatio = $this->currencyToWalletRatio();
 
@@ -25,7 +25,7 @@ trait WalletsTrait
     /**
      * Converts wallet points to currency
      */
-    public function giveSignupPointsToCustomer($customer_id)
+    public function giveSignupPointsToCustomer(int|string $customer_id): void
     {
         try {
             $settings = Settings::getData();
@@ -43,7 +43,7 @@ trait WalletsTrait
     /**
      * Convert currency to wallet points
      */
-    private function currencyToWalletPoints($currency)
+    private function currencyToWalletPoints(int|float $currency): int
     {
         $currencyToWalletRatio = $this->currencyToWalletRatio();
 
@@ -52,7 +52,7 @@ trait WalletsTrait
         return (int) $points;
     }
 
-    private function currencyToWalletRatio()
+    private function currencyToWalletRatio(): int|float
     {
         try {
             $settings = Settings::getData();

@@ -9,7 +9,7 @@ use function Laravel\Prompts\table;
 
 trait ENVSetupTrait
 {
-    public function CheckENVExistOrNot()
+    public function CheckENVExistOrNot(): bool
     {
         $envFilePath = base_path('.env');
 
@@ -18,9 +18,11 @@ trait ENVSetupTrait
 
             return false;
         }
+
+        return true;
     }
 
-    public function existingKeyValueInENV($targetKeys, $envContent)
+    public function existingKeyValueInENV(array $targetKeys, string $envContent): array
     {
         $keyValuePairs = [];
 

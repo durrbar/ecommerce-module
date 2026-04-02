@@ -8,11 +8,8 @@ trait Helper
 {
     /**
      * Format billing, shipping address
-     *
-     * @param  array  $address
-     * @return string
      */
-    public function formatAddress($address)
+    public function formatAddress(?array $address): ?string
     {
         if (! $address) {
             return null;

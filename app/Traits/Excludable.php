@@ -5,26 +5,23 @@ declare(strict_types=1);
 namespace Modules\Ecommerce\Traits;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 trait Excludable
 {
     /**
      * Exclude an array of elements from the result.
-     *
-     * @return mixed
      */
     #[Scope]
-    public function exclude($query, $columns)
+    public function exclude(Builder $query, array|string $columns): Builder
     {
         return $query->select(array_diff($this->getTableColumns(), (array) $columns));
     }
 
     /**
      * Get the array of columns
-     *
-     * @return mixed
      */
-    private function getTableColumns()
+    private function getTableColumns(): array
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
