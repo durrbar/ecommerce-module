@@ -27,12 +27,7 @@ class Category extends Model
     use Sluggable;
     use TranslationTrait;
 
-    /**
-     * Get the user's full name.
-     *
-     * @return string
-     */
-    public function getParentIdAttribute()
+    public function getParentIdAttribute(): int|string|null
     {
         return $this->getAttributes()['parent'] ?? null;
     }
