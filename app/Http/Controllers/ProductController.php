@@ -74,9 +74,17 @@ class ProductController extends CoreController
             $dateRange = explode('//', $request->date_range);
             $unavailableProducts = $this->repository->getUnavailableProducts($dateRange[0], $dateRange[1]);
         }
-        if (in_array('variation_options.digital_files', explode(';', $request->with)) || in_array('digital_files', explode(';', $request->with))) {
+
+        $with = is_string($request->with) ? $request->with : '';
+        $requestedRelations = $with === '' ? [] : explode(';', $with);
+
+        if (
+            in_array('variation_options.digital_files', $requestedRelations, true) ||
+            in_array('digital_files', $requestedRelations, true)
+        ) {
             throw new AuthorizationException(NOT_AUTHORIZED);
         }
+
         $products_query = $products_query->whereNotIn('id', $unavailableProducts);
 
         if ($request->flash_sale_builder) {
@@ -145,6 +153,7 @@ class ProductController extends CoreController
             $language = $request->language ?? DEFAULT_LANGUAGE;
             $user = $request->user();
             $limit = isset($request->limit) ? $request->limit : 10;
+            $requestedRelations = $this->parseRequestedRelations($request);
             $product = $this->repository->with([
                 'type',
                 'categories',
@@ -160,9 +169,7 @@ class ProductController extends CoreController
                 ->where(function ($query) use ($slug): void {
                     $query->where('slug', $slug)->orWhere('id', $slug);
                 })->firstOrFail();
-            if (
-                in_array('variation_options.digital_file', explode(';', $request->with)) || in_array('digital_file', explode(';', $request->with))
-            ) {
+            if (in_array('variation_options.digital_file', $requestedRelations, true) || in_array('digital_file', $requestedRelations, true)) {
                 if (! $this->repository->hasPermission($user, $product->shop_id)) {
                     throw new AuthorizationException(NOT_AUTHORIZED);
                 }
@@ -764,5 +771,15 @@ class ProductController extends CoreController
         }
 
         return $products_query;
+    }
+
+    private function parseRequestedRelations(Request $request): array
+    {
+        $with = $request->input('with');
+        if (! is_string($with) || $with === '') {
+            return [];
+        }
+
+        return array_values(array_filter(explode(';', $with), static fn (string $relation): bool => $relation !== ''));
     }
 }
