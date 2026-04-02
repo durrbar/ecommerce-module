@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Ecommerce\Repositories;
 
+use Illuminate\Http\Request;
 use Modules\Core\Repositories\BaseRepository;
 use Modules\Ecommerce\Models\Banner;
 use Modules\Ecommerce\Models\Type;
@@ -29,7 +30,7 @@ class TypeRepository extends BaseRepository
         'language',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -41,12 +42,12 @@ class TypeRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return Type::class;
     }
 
-    public function storeType($request)
+    public function storeType(Request $request): Type
     {
         $request['slug'] = $this->makeSlug($request);
         $type = $this->create($request->only($this->dataArray));
@@ -57,7 +58,7 @@ class TypeRepository extends BaseRepository
         return $type;
     }
 
-    public function updateType($request, $type)
+    public function updateType(Request $request, Type $type): Type
     {
 
         Type::whereJsonContains('settings->isHome', true)->where('slug', '!=', $type->slug)

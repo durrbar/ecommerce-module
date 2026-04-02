@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Ecommerce\Repositories;
 
+use Illuminate\Http\Request;
 use Modules\Core\Repositories\BaseRepository;
 use Modules\Ecommerce\Models\Author;
 use Modules\Role\Enums\Permission;
@@ -36,7 +37,7 @@ class AuthorRepository extends BaseRepository
         'language',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -48,12 +49,12 @@ class AuthorRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return Author::class;
     }
 
-    public function storeAuthor($request)
+    public function storeAuthor(Request $request): Author
     {
         $data = $request->only($this->dataArray);
         $data['slug'] = $this->makeSlug($request);
@@ -66,7 +67,7 @@ class AuthorRepository extends BaseRepository
         return $this->create($data);
     }
 
-    public function updateAuthor($request, $author)
+    public function updateAuthor(Request $request, Author $author): Author
     {
         $data = $request->only($this->dataArray);
         if (! $request->user()->hasPermissionTo(Permission::SuperAdmin->value)) {

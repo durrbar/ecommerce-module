@@ -33,7 +33,7 @@ class CategoryRepository extends BaseRepository
         'parent',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -45,12 +45,12 @@ class CategoryRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return Category::class;
     }
 
-    public function saveCategory(Request $request)
+    public function saveCategory(Request $request): Category
     {
         $data = $request->only($this->dataArray);
         $data['slug'] = $this->makeSlug($request);
@@ -58,7 +58,7 @@ class CategoryRepository extends BaseRepository
         return $this->create($data);
     }
 
-    public function updateCategory($request, $category)
+    public function updateCategory(Request $request, Category $category): Category
     {
         $data = $request->only($this->dataArray);
         if (! empty($request->slug) && $request->slug !== $category['slug']) {

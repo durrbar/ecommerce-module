@@ -11,7 +11,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 
 class FeedbackRepository extends BaseRepository
 {
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->pushCriteria(app(RequestCriteria::class));
@@ -22,7 +22,7 @@ class FeedbackRepository extends BaseRepository
     /**
      * Configure the Model
      **/
-    public function model()
+    public function model(): string
     {
         return Feedback::class;
     }
