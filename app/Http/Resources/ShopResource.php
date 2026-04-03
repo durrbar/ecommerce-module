@@ -15,7 +15,7 @@ class ShopResource extends Resource
      * @param  Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
