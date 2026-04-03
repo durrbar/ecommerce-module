@@ -33,7 +33,7 @@ class NotifyQuestionAnswered extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
@@ -44,7 +44,7 @@ class NotifyQuestionAnswered extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): MailMessage
     {
         $url = '';
         $product = Product::findOrFail($this->question->product_id);
