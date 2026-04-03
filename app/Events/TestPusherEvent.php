@@ -19,18 +19,10 @@ class TestPusherEvent implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $store_notice;
-
-    public $user;
-
     /**
      * Create a new event instance.
      */
-    public function __construct(StoreNotice $store_notice, User $user)
-    {
-        $this->store_notice = $store_notice;
-        $this->user = $user;
-    }
+    public function __construct(public StoreNotice $store_notice, public User $user) {}
 
     /**
      * Get the channels the event should broadcast on.
