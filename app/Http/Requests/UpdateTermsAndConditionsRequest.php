@@ -15,7 +15,7 @@ class UpdateTermsAndConditionsRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,7 +25,7 @@ class UpdateTermsAndConditionsRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         // $language = $this->language ?? DEFAULT_LANGUAGE;
 
@@ -39,7 +39,7 @@ class UpdateTermsAndConditionsRequest extends FormRequest
         return $rules;
     }
 
-    public function failedValidation(Validator $validator)
+    public function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
