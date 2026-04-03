@@ -10,15 +10,7 @@ use Modules\Ecommerce\Models\Product;
 class ProductReviewRejected implements ShouldQueue
 {
     /**
-     * @var Product
-     */
-    public $product;
-
-    /**
      * Create a new event instance.
      */
-    public function __construct(Product $product)
-    {
-        $this->product = $product;
-    }
+    public function __construct(public Product $product) {}
 }

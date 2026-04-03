@@ -6,13 +6,8 @@ namespace Modules\Ecommerce\Events;
 
 class ProcessUserData
 {
-    private $appData;
-
     /**
      * Create a new event instance.
      */
-    public function __construct(?array $appData = [])
-    {
-        $this->appData = $appData;
-    }
+    public function __construct(private ?array $appData = []) {}
 }
