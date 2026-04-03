@@ -22,7 +22,7 @@ class TestPusherEvent implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public StoreNotice $store_notice, public User $user) {}
+    public function __construct(public readonly StoreNotice $store_notice, public User $user) {}
 
     /**
      * Get the channels the event should broadcast on.

@@ -11,5 +11,5 @@ class QuestionAnswered
     /**
      * Create a new event instance.
      */
-    public function __construct(public Question $question) {}
+    public function __construct(public readonly Question $question) {}
 }

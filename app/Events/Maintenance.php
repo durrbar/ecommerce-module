@@ -12,5 +12,5 @@ class Maintenance
      * @param string language The "language" parameter is a string that represents the programming
      * language. It is passed to the constructor of a class.
      */
-    public function __construct(public string $language) {}
+    public function __construct(public readonly string $language) {}
 }
