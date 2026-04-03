@@ -8,8 +8,5 @@ use Modules\Ecommerce\Models\Question;
 
 class QuestionAnswered
 {
-    /**
-     * Create a new event instance.
-     */
     public function __construct(public readonly Question $question) {}
 }

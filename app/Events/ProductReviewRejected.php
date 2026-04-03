@@ -9,8 +9,5 @@ use Modules\Ecommerce\Models\Product;
 
 class ProductReviewRejected implements ShouldQueue
 {
-    /**
-     * Create a new event instance.
-     */
     public function __construct(public readonly Product $product) {}
 }

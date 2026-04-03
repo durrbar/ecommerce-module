@@ -10,11 +10,6 @@ use Modules\User\Models\User;
 
 class DigitalProductUpdateEvent implements ShouldQueue
 {
-    /**
-     * Create a new event instance.
-     *
-     * @param  $flash_sale
-     */
     public function __construct(
         public Product $product,
         public User $user,

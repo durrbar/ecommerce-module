@@ -9,8 +9,5 @@ use Modules\Ecommerce\Models\Product;
 
 class ProductReviewApproved implements ShouldQueue
 {
-    /**
-     * Create a new event instance.
-     */
     public function __construct(public readonly Product $product) {}
 }

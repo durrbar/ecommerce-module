@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Ecommerce\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -19,10 +18,7 @@ class TestPusherEvent implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-    /**
-     * Create a new event instance.
-     */
-    public function __construct(public readonly StoreNotice $store_notice, public User $user) {}
+    public function __construct(public readonly StoreNotice $storeNotice, public User $user) {}
 
     /**
      * Get the channels the event should broadcast on.
@@ -31,19 +27,14 @@ class TestPusherEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        $temp_event_channels = [];
-        if (isset($this->store_notice->users)) {
-            foreach ($this->store_notice->users as $user) {
-                $channel_name = new PrivateChannel('store_notice.created.'.$user->id);
-                $temp_event_channels[] = $channel_name;
+        $eventChannels = [];
+        if (isset($this->storeNotice->users)) {
+            foreach ($this->storeNotice->users as $user) {
+                $eventChannels[] = new PrivateChannel('store_notice.created.'.$user->id);
             }
         }
-        // return [
-        // new Channel('store_notice.created'),
-        // new PrivateChannel('store_notice.created.' . $this->user->id)
-        // ];
 
-        return $temp_event_channels;
+        return $eventChannels;
     }
 
     /**
@@ -54,7 +45,7 @@ class TestPusherEvent implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'store-notice' => $this->store_notice,
+            'store-notice' => $this->storeNotice,
         ];
     }
 
@@ -63,7 +54,6 @@ class TestPusherEvent implements ShouldBroadcast
      */
     public function broadcastAs(): string
     {
-        // event's name will be written here.
         return 'test.pusher.event';
     }
 }
