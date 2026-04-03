@@ -13,9 +13,8 @@ class CheckAndSetDefaultCard implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @return void
      */
-    public function handle(PaymentMethods $event)
+    public function handle(PaymentMethods $event): void
     {
         $currentPaymentMethods = $event->payment_methods;
         $allPaymentMethods = $this->fetchAllPaymentMethods();

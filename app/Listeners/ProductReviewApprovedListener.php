@@ -14,9 +14,8 @@ class ProductReviewApprovedListener implements ShouldQueue
      * Handle the event.
      *
      * @param  ProductReview  $event
-     * @return void
      */
-    public function handle(ProductReviewApproved $event)
+    public function handle(ProductReviewApproved $event): void
     {
         $vendor = $event->product->shop->owner;
         $vendor->notify(new ProductApprovedNotification($event->product));

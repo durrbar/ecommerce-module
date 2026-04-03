@@ -25,9 +25,8 @@ class ManageProductInventory implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @return void
      */
-    public function handle(OrderCreated $event)
+    public function handle(OrderCreated $event): void
     {
         $products = $event->order->products;
         foreach ($products as $product) {

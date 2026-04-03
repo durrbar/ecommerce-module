@@ -14,9 +14,8 @@ class ProductReviewRejectedListener implements ShouldQueue
      * Handle the event.
      *
      * @param  ProductReview  $event
-     * @return void
      */
-    public function handle(ProductReviewRejected $event)
+    public function handle(ProductReviewRejected $event): void
     {
         $vendor = $event->product->shop->owner;
         $vendor->notify(new ProductRejectedNotification($event->product));

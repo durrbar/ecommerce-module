@@ -14,7 +14,7 @@ use Modules\Vendor\Models\FlashSale;
 
 class FlashSaleProductProcess implements ShouldQueue
 {
-    public function handle(FlashSaleProcessed $event)
+    public function handle(FlashSaleProcessed $event): void
     {
         $flash_sales_action = $event->action;
         $language = $event->language;
@@ -67,7 +67,6 @@ class FlashSaleProductProcess implements ShouldQueue
      * processNewlyAddedProductInFlashSale
      *
      * @param  mixed  $products
-     * @return void
      */
     public function processNewlyAddedProductInFlashSale($data)
     {
@@ -123,7 +122,6 @@ class FlashSaleProductProcess implements ShouldQueue
      * processFlashSaleProducts
      *
      * @param  mixed  $flash_sale
-     * @return void
      */
     public function processFlashSaleProducts($flash_sale)
     {
@@ -181,7 +179,6 @@ class FlashSaleProductProcess implements ShouldQueue
      * processFlashSaleAfterExpired
      *
      * @param  mixed  $flash_sale
-     * @return void
      */
     public function processFlashSaleAfterExpired($flash_sale)
     {
@@ -198,7 +195,6 @@ class FlashSaleProductProcess implements ShouldQueue
      * processSoftDeletedFlashSales
      *
      * @param  mixed  $flash_sale
-     * @return void
      */
     public function processSoftDeletedFlashSales($flash_sale)
     {
@@ -216,7 +212,6 @@ class FlashSaleProductProcess implements ShouldQueue
      * unsetProductFromFlashSale
      *
      * @param  mixed  $product_ids
-     * @return void
      */
     public function unsetProductFromFlashSale($product_ids)
     {

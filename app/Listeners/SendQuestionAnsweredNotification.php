@@ -18,9 +18,8 @@ class SendQuestionAnsweredNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @return void
      */
-    public function handle(QuestionAnswered $event)
+    public function handle(QuestionAnswered $event): void
     {
         $emailReceiver = $this->getWhichUserWillGetEmail(EventType::QuestionAnswered->value, $event->question->language ?? DEFAULT_LANGUAGE);
         if ($emailReceiver['customer'] && $event->question->customer) {
