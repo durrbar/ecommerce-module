@@ -14,14 +14,14 @@ class MaintenanceReminder extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $settings;
+    public mixed $settings;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($settings)
+    public function __construct(mixed $settings)
     {
         $this->settings = $settings;
     }

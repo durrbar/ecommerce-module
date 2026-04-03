@@ -15,18 +15,18 @@ class DigitalProductUpdateNotification extends Notification implements ShouldQue
 {
     use Queueable;
 
-    protected $user;
+    protected User $user;
 
-    protected $product;
+    protected Product $product;
 
-    protected $optional_message;
+    protected mixed $optional_message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user, Product $product, $optional_message = null)
+    public function __construct(User $user, Product $product, mixed $optional_message = null)
     {
         $this->user = $user;
         $this->product = $product;
