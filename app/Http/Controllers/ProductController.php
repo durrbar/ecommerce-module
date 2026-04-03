@@ -70,9 +70,11 @@ class ProductController extends CoreController
 
         $products_query = $this->repository->with(['type', 'shop'])->where('language', $language);
 
-        if (isset($request->date_range)) {
-            $dateRange = explode('//', $request->date_range);
-            $unavailableProducts = $this->repository->getUnavailableProducts($dateRange[0], $dateRange[1]);
+        if (is_string($request->date_range) && $request->date_range !== '') {
+            $dateRange = explode('//', $request->date_range, 2);
+            if (count($dateRange) === 2 && $dateRange[0] !== '' && $dateRange[1] !== '') {
+                $unavailableProducts = $this->repository->getUnavailableProducts($dateRange[0], $dateRange[1]);
+            }
         }
 
         $with = is_string($request->with) ? $request->with : '';
