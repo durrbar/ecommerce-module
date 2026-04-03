@@ -77,8 +77,7 @@ class ProductController extends CoreController
             }
         }
 
-        $with = is_string($request->with) ? $request->with : '';
-        $requestedRelations = $with === '' ? [] : explode(';', $with);
+        $requestedRelations = $this->parseRequestedRelations($request);
 
         if (
             in_array('variation_options.digital_files', $requestedRelations, true) ||
@@ -782,6 +781,9 @@ class ProductController extends CoreController
             return [];
         }
 
-        return array_values(array_filter(explode(';', $with), static fn (string $relation): bool => $relation !== ''));
+        return array_values(array_filter(
+            array_map(static fn (string $relation): string => trim($relation), explode(';', $with)),
+            static fn (string $relation): bool => $relation !== ''
+        ));
     }
 }
