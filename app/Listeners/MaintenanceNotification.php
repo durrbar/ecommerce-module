@@ -16,21 +16,9 @@ use Modules\User\Models\User;
 class MaintenanceNotification
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(Maintenance $event)
+    public function handle(Maintenance $event): void
     {
         $language = $event->language;
         $settings = Settings::getData($language);
