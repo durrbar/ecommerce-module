@@ -71,7 +71,7 @@ class DigitalProductUpdateNotification extends Notification implements ShouldQue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [
             //
