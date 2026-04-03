@@ -19,10 +19,8 @@ class CommissionRateUpdateListener
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(CommissionRateUpdateEvent $event)
+    public function handle(CommissionRateUpdateEvent $event): void
     {
         $shop = $event->shop;
         $balance = $event->balance;
@@ -38,6 +36,5 @@ class CommissionRateUpdateListener
         } catch (Exception $e) {
             logger('Error in CommissionRateUpdateListener! '.$e->getMessage());
         }
-
     }
 }

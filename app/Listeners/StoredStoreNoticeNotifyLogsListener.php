@@ -15,10 +15,8 @@ class StoredStoreNoticeNotifyLogsListener implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(StoreNoticeEvent $event)
+    public function handle(StoreNoticeEvent $event): void
     {
         // save notification for vendor
         if (isset($event->storeNotice->users)) {

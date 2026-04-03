@@ -17,10 +17,8 @@ class StoredOrderNotifyLogsListener implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(OrderCreated $event)
+    public function handle(OrderCreated $event): void
     {
         // save notification for admin
         $admins = $this->getAdminUsers();

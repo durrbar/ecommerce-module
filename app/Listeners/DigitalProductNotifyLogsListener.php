@@ -6,12 +6,9 @@ namespace Modules\Ecommerce\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Exceptions\DurrbarException;
 use Modules\Ecommerce\Events\DigitalProductUpdateEvent;
 use Modules\Ecommerce\Models\NotifyLogs;
-use Modules\Ecommerce\Models\Settings;
 use Modules\Ecommerce\Notifications\DigitalProductUpdateNotification;
-use Modules\Order\Models\Order;
 use Modules\User\Models\User;
 use Modules\User\Traits\UsersTrait;
 
@@ -21,12 +18,9 @@ class DigitalProductNotifyLogsListener implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(DigitalProductUpdateEvent $event)
+    public function handle(DigitalProductUpdateEvent $event): void
     {
-
         // save notification for vendor
         if (isset($event->product)) {
             $ordered_files = DB::table('ordered_files')

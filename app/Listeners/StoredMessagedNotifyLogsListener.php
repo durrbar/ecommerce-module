@@ -16,10 +16,8 @@ class StoredMessagedNotifyLogsListener implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(MessageSent $event)
+    public function handle(MessageSent $event): void
     {
         switch ($event->type) {
             case 'shop':

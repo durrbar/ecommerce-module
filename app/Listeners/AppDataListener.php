@@ -10,34 +10,25 @@ use Modules\Ecommerce\Events\ProcessUserData;
 
 class AppDataListener
 {
-    private $appData;
-
-    private $config;
-
     /**
      * Create the event listener.
-     *
-     * @return void
      */
-    public function __construct(DurrbarVerification $config)
-    {
-        $this->config = $config;
-    }
+    public function __construct(private readonly DurrbarVerification $config) {}
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(ProcessUserData $event)
+    public function handle(ProcessUserData $event): void
     {
-        $last_checking_time = $this->config->getLastCheckingTime();
-        $lastCheckingTimeDifferenceFromNow = Carbon::parse($last_checking_time)->diffInHours(Carbon::now());
+        $lastCheckingTime = $this->config->getLastCheckingTime();
+        $lastCheckingTimeDifferenceFromNow = Carbon::parse($lastCheckingTime)->diffInHours(Carbon::now());
+
         if ($lastCheckingTimeDifferenceFromNow < 12) {
             return;
         }
+
         $key = $this->config->getPrivateKey();
-        $language = isset(request()['language']) ? request()['language'] : DEFAULT_LANGUAGE;
+        $language = request('language', DEFAULT_LANGUAGE);
         $this->config->verify($key)->modifySettingsData($language);
     }
 }
