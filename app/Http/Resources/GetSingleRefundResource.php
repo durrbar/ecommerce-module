@@ -36,7 +36,7 @@ class GetSingleRefundResource extends Resource
 
     // TODO When order resource done then use OrderResource Instead of these function
 
-    private function getOrderData($data)
+    private function getOrderData(mixed $data): array
     {
         $products = $data->relationLoaded('products') ? $data->products : collect();
 
@@ -58,7 +58,7 @@ class GetSingleRefundResource extends Resource
         ];
     }
 
-    private function getProductData($products)
+    private function getProductData(iterable $products): array
     {
         $item = [];
         foreach ($products as $product) {
@@ -73,7 +73,7 @@ class GetSingleRefundResource extends Resource
         return $item;
     }
 
-    private function getProductPivot($pivot)
+    private function getProductPivot(mixed $pivot): array
     {
         return [
             'order_quantity' => $pivot->order_quantity,
