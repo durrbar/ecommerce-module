@@ -147,7 +147,6 @@ class TermsAndConditionsController extends CoreController
     /**
      * updateTermsAndConditions
      *
-     * @return void
      */
     public function updateTermsAndConditions(UpdateTermsAndConditionsRequest $request)
     {
@@ -184,7 +183,6 @@ class TermsAndConditionsController extends CoreController
     /**
      * approveTerm
      *
-     * @return void
      */
     public function approveTerm(Request $request)
     {
@@ -210,7 +208,6 @@ class TermsAndConditionsController extends CoreController
     /**
      * disApproveTerm
      *
-     * @return void
      */
     public function disApproveTerm(Request $request)
     {

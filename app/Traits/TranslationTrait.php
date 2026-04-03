@@ -44,7 +44,6 @@ trait TranslationTrait
     /**
      * getTranslations
      *
-     * @return void
      */
     public function getTranslations()
     {
@@ -67,7 +66,6 @@ trait TranslationTrait
      * @param  mixed  $translation_item_id
      * @param  mixed  $language_code
      * @param  mixed  $source_language_code
-     * @return void
      */
     public function storeTranslation($translation_item_id, $language_code, $source_language_code = DEFAULT_LANGUAGE)
     {

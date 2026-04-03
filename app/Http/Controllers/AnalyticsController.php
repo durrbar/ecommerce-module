@@ -320,7 +320,6 @@ class AnalyticsController extends CoreController
     /**
      * categoryWiseProduct
      *
-     * @return void
      */
     public function categoryWiseProduct(Request $request)
     {
@@ -405,7 +404,6 @@ class AnalyticsController extends CoreController
     /**
      * categoryWiseProductSale
      *
-     * @return void
      */
     public function categoryWiseProductSale(Request $request)
     {
@@ -502,7 +500,6 @@ class AnalyticsController extends CoreController
     /**
      * topRatedProducts
      *
-     * @return void
      */
     public function topRatedProducts(Request $request)
     {

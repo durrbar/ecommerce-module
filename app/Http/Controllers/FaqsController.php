@@ -171,7 +171,6 @@ class FaqsController extends CoreController
     /**
      * updateFaqs
      *
-     * @return void
      */
     public function updateFaqs(UpdateFaqsRequest $request)
     {

@@ -196,7 +196,6 @@ class ProductRepository extends BaseRepository
      *
      * @param  mixed  $request
      * @param  mixed  $setting
-     * @return void
      */
     public function storeProduct($request, $setting)
     {
@@ -338,7 +337,6 @@ class ProductRepository extends BaseRepository
     /**
      * updateProduct
      *
-     * @return void
      */
     public function updateProduct($request, $id, $setting)
     {
@@ -529,7 +527,6 @@ class ProductRepository extends BaseRepository
     /**
      * getBestSellingProducts
      *
-     * @return void
      */
     public function getBestSellingProducts($request)
     {

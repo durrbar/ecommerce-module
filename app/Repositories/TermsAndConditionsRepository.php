@@ -57,7 +57,6 @@ class TermsAndConditionsRepository extends BaseRepository
      * storeTermsAndConditions
      *
      * @param  mixed  $request
-     * @return void
      */
     public function storeTermsAndConditions($request)
     {
@@ -90,7 +89,6 @@ class TermsAndConditionsRepository extends BaseRepository
      *
      * @param  mixed  $request
      * @param  mixed  $termsAndConditions
-     * @return void
      */
     public function updateTermsAndConditions(Request $request, TermsAndConditions $termsAndConditions)
     {

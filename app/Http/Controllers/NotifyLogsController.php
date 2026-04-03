@@ -124,7 +124,6 @@ class NotifyLogsController extends CoreController
     /**
      * readNotifyLogs
      *
-     * @return void
      */
     public function readNotifyLogs(Request $request)
     {
@@ -142,7 +141,6 @@ class NotifyLogsController extends CoreController
     /**
      * readAllNotifyLogs
      *
-     * @return void
      */
     public function readAllNotifyLogs(Request $request)
     {

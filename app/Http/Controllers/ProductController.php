@@ -232,7 +232,6 @@ class ProductController extends CoreController
     /**
      * destroyProduct
      *
-     * @return void
      */
     public function destroyProduct(Request $request)
     {
@@ -252,7 +251,6 @@ class ProductController extends CoreController
     /**
      * relatedProducts
      *
-     * @return void
      */
     public function relatedProducts(Request $request)
     {
@@ -267,7 +265,6 @@ class ProductController extends CoreController
      * exportProducts
      *
      * @param  mixed  $shop_id
-     * @return void
      */
     public function exportProducts(Request $request, $shop_id)
     {
@@ -345,7 +342,6 @@ class ProductController extends CoreController
      * exportVariableOptions
      *
      * @param  mixed  $shop_id
-     * @return void
      */
     public function exportVariableOptions(Request $request, $shop_id)
     {
@@ -515,7 +511,6 @@ class ProductController extends CoreController
     /**
      * fetchDigitalFilesForProduct
      *
-     * @return void
      */
     public function fetchDigitalFilesForProduct(Request $request)
     {
@@ -531,7 +526,6 @@ class ProductController extends CoreController
     /**
      * fetchDigitalFilesForVariation
      *
-     * @return void
      */
     public function fetchDigitalFilesForVariation(Request $request)
     {
@@ -547,7 +541,6 @@ class ProductController extends CoreController
     /**
      * bestSellingProducts
      *
-     * @return void
      */
     public function bestSellingProducts(Request $request)
     {
@@ -590,7 +583,6 @@ class ProductController extends CoreController
     /**
      * calculateRentalPrice
      *
-     * @return void
      */
     public function calculateRentalPrice(Request $request)
     {
@@ -638,7 +630,6 @@ class ProductController extends CoreController
     /**
      * myWishlists
      *
-     * @return void
      */
     public function myWishlists(Request $request)
     {
@@ -663,7 +654,6 @@ class ProductController extends CoreController
     /**
      * draftedProducts
      *
-     * @return void
      */
     public function draftedProducts(Request $request)
     {
@@ -714,7 +704,6 @@ class ProductController extends CoreController
     /**
      * productStock
      *
-     * @return void
      */
     public function productStock(Request $request)
     {

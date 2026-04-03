@@ -24,7 +24,6 @@ class DigitalProductUpdateNotification extends Notification implements ShouldQue
     /**
      * Create a new notification instance.
      *
-     * @return void
      */
     public function __construct(User $user, Product $product, mixed $optional_message = null)
     {

@@ -55,7 +55,6 @@ class FaqsRepository extends BaseRepository
      * storeFaqs
      *
      * @param  mixed  $request
-     * @return void
      */
     public function storeFaqs($request)
     {
@@ -86,7 +85,6 @@ class FaqsRepository extends BaseRepository
      *
      * @param  mixed  $request
      * @param  mixed  $faqs
-     * @return void
      */
     public function updateFaqs(Request $request, Faqs $faqs)
     {
