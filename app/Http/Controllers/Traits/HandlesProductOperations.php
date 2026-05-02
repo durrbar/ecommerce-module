@@ -11,8 +11,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Modules\Common\Facades\ErrorHelper;
-use Modules\Common\Facades\FileHelper;
+use Modules\Core\Facades\ErrorHelper;
+use Modules\Core\Facades\FileHelper;
 use Modules\Ecommerce\Models\Product;
 
 trait HandlesProductOperations
